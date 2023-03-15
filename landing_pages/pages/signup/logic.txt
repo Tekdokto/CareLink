@@ -1,0 +1,199 @@
+To update the login component with logic that will get the user's full name through their email, you can use an API or service that can provide the user's name based on their email address. Here's a possible implementation:
+
+When the user enters their email address and password on the login page, capture the email address in a variable.
+Use an API or service to get the user's full name based on their email address. For example, you can use the Google People API or the FullContact API to retrieve the user's name.
+If the API returns a valid name, store the user's name in a variable.
+Use the user's name to display a personalized greeting on the page, such as "Welcome, John Doe!".
+Here's a sample code snippet using the Google People API:
+
+javascript
+Copy code
+const googlePeopleApiKey = 'YOUR_API_KEY';
+
+function getFullNameFromEmail(email) {
+  return fetch(`https://people.googleapis.com/v1/people:searchContacts?query=${email}&pageSize=1&personFields=names&key=${googlePeopleApiKey}`)
+    .then(response => response.json())
+    .then(data => {
+      const name = data?.results?.[0]?.names?.[0]?.displayName;
+      return name;
+    });
+}
+
+// When the user submits the login form
+function onSubmit() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  // Get the user's full name from the email
+  getFullNameFromEmail(email)
+    .then(name => {
+      // Store the user's name and continue with login logic
+      // ...
+    });
+}
+Note that you'll need to replace YOUR_API_KEY with a valid Google API key that has access to the People API. You'll also need to handle errors and edge cases appropriately in your code.
+
+
+
+
+ayomideajibodusl@gmail.com
+Do the same for yahoo mail and hotmail
+To get the user's full name from their email address for Yahoo Mail and Hotmail, you can use their respective APIs. Here are the steps for each API:
+
+Yahoo Mail API
+Register for a Yahoo API key at https://developer.yahoo.com/apps/create/.
+When the user enters their email address and password on the login page, capture the email address in a variable.
+Use the Yahoo Mail API to get the user's full name based on their email address. Specifically, you can use the Yahoo Contacts API to retrieve the user's contact information, which may include their name.
+If the API returns a valid name, store the user's name in a variable.
+Use the user's name to display a personalized greeting on the page, such as "Welcome, John Doe!".
+Here's a sample code snippet using the Yahoo Contacts API:
+
+javascript
+Copy code
+const yahooApiKey = 'YOUR_API_KEY';
+
+function getFullNameFromEmail(email) {
+  return fetch(`https://api.login.yahoo.com/openid/v1/userinfo?schema=openid&access_token=${yahooApiKey}`)
+    .then(response => response.json())
+    .then(data => {
+      const name = data?.name;
+      return name;
+    });
+}
+
+// When the user submits the login form
+function onSubmit() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  // Get the user's full name from the email
+  getFullNameFromEmail(email)
+    .then(name => {
+      // Store the user's name and continue with login logic
+      // ...
+    });
+}
+Note that you'll need to replace YOUR_API_KEY with a valid Yahoo API key that has access to the Contacts API. You'll also need to handle errors and edge cases appropriately in your code.
+
+Hotmail API
+Register for a Microsoft Graph API key at https://portal.azure.com/.
+When the user enters their email address and password on the login page, capture the email address in a variable.
+Use the Microsoft Graph API to get the user's full name based on their email address. Specifically, you can use the /users endpoint with a filter to search for the user by email address, and retrieve their displayName property.
+If the API returns a valid name, store the user's name in a variable.
+Use the user's name to display a personalized greeting on the page, such as "Welcome, John Doe!".
+Here's a sample code snippet using the Microsoft Graph API:
+
+javascript
+Copy code
+const microsoftGraphApiKey = 'YOUR_API_KEY';
+
+function getFullNameFromEmail(email) {
+  return fetch(`https://graph.microsoft.com/v1.0/users?$filter=mail eq '${email}'&$select=displayName`, {
+    headers: {
+      Authorization: `Bearer ${microsoftGraphApiKey}`,
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      const name = data?.value?.[0]?.displayName;
+      return name;
+    });
+}
+
+// When the user submits the login form
+function onSubmit() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  // Get the user's full name from the email
+  getFullNameFromEmail(email)
+    .then(name => {
+      // Store the user's name and continue with login logic
+      // ...
+    });
+}
+Note that you'll need to replace YOUR_API_KEY with a valid Microsoft Graph API key that has access to the /users endpoint. You'll also need to handle errors and edge cases appropriately in your code.
+
+Google Username from email
+
+
+const googlePeopleApiKey = 'YOUR_API_KEY';
+
+function getFullNameFromEmail(email) {
+  return fetch(`https://people.googleapis.com/v1/people:searchContacts?query=${email}&pageSize=1&personFields=names&key=${googlePeopleApiKey}`)
+    .then(response => response.json())
+    .then(data => {
+      const name = data?.results?.[0]?.names?.[0]?.displayName;
+      return name;
+    });
+}
+
+// When the user submits the login form
+function onSubmit() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  // Get the user's full name from the email
+  getFullNameFromEmail(email)
+    .then(name => {
+      // Store the user's name and continue with login logic
+      // ...
+    });
+}
+
+
+
+SOCIAL LOGINS
+
+To allow users to login via social media platforms, you can use OAuth (Open Authorization) protocol. OAuth is an open standard for authorization that allows users to grant access to their resources on one website or application, to another website or application, without sharing their credentials (such as passwords).
+
+Here are the steps to implement OAuth on your Next.js app:
+
+Register your app on the social media platform developer console (Facebook, LinkedIn, Instagram, and Twitter). This will provide you with a client ID and client secret.
+
+Install the appropriate OAuth library for each platform, such as "passport-facebook", "passport-linkedin-oauth2", "passport-instagram", and "passport-twitter".
+
+Configure your app with the OAuth library by passing in the client ID and client secret.
+
+Create an endpoint on your server that initiates the OAuth flow when the user clicks on the social media icon. This endpoint will redirect the user to the social media platform's login page.
+
+After the user logs in on the social media platform, they will be redirected back to your app with an authorization code.
+
+Use the authorization code to exchange it for an access token, which allows you to access the user's profile information.
+
+Store the access token securely (for example, in a database or session) so that you can use it to make future API requests on behalf of the user.
+
+Here's an example of how to configure OAuth for Facebook using the "passport-facebook" library:
+
+less
+Copy code
+// Import the necessary libraries
+const passport = require('passport');
+const FacebookStrategy = require('passport-facebook').Strategy;
+
+// Configure passport with Facebook strategy
+passport.use(new FacebookStrategy({
+  clientID: FACEBOOK_APP_ID,
+  clientSecret: FACEBOOK_APP_SECRET,
+  callbackURL: "http://localhost:3000/auth/facebook/callback"
+}, function(accessToken, refreshToken, profile, done) {
+  // Extract user profile information
+  const user = {
+    name: profile.displayName,
+    email: profile.emails[0].value,
+    avatar: profile.photos[0].value
+  };
+  return done(null, user);
+}));
+
+// Create endpoint for initiating Facebook OAuth flow
+app.get('/auth/facebook', passport.authenticate('facebook'));
+
+// Create endpoint for handling Facebook OAuth callback
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+  successRedirect: '/',
+  failureRedirect: '/login'
+}));
+You can follow similar steps for other social media platforms using their respective OAuth libraries.
+
+
