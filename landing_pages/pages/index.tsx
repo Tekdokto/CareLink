@@ -1,10 +1,4 @@
 import Layout from "../components/Layout";
-import HeroBanner from "../components/HeroBanner";
-import Features from "../components/Features";
-import About from "../components/About";
-import HowTo from "../components/HowTo";
-import Testimonials from "../components/Testimonials";
-import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -36,21 +30,7 @@ export default function Home({toggleTheme, themeMode}) {
 
   return (
     <Layout toggleTheme={toggleTheme} themeMode={themeMode}>
-      <HeroBanner />
       <section className={classes.section}>
-        <Features />
-      </section>
-      <section className={classes.section}>
-        <About />
-      </section>
-      <section className={classes.section}>
-        <HowTo />
-      </section>
-      <section className={classes.section}>
-        <Testimonials />
-      </section>
-      <section className={classes.section}>
-        <Contact />
       </section>
     </Layout>
   );
