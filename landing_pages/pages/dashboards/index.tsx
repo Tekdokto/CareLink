@@ -29,6 +29,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Link from 'next/link';
 import clsx from 'clsx';
+import useTheme  from '@material-ui/core/styles/useTheme';
 
 
 
@@ -125,6 +126,8 @@ const DashboardPage = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [messagesAnchorEl, setMessagesAnchorEl] = useState(null);
 
+  const theme = useTheme();
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
     setOpen(!open);
@@ -202,7 +205,6 @@ const DashboardPage = () => {
             </div>
         </div>
     );
-
 return (
     <div className={classes.root}>
         <AppBar position="fixed" className={open ? classes.appBarShift : classes.appBar}>
@@ -278,6 +280,9 @@ return (
                                 </IconButton>
                                 <p>Notifications</p>
                             </MenuItem>
+                            <MenuItem>
+                            <Avatar alt="User Avatar" src="https://example.com/avatar.jpg" />
+                            </MenuItem>
                         </Menu>
                     </div>
                 </Toolbar>
@@ -294,18 +299,10 @@ return (
                 <div className={classes.drawerHeader}>
                     <IconButton onClick={handleDrawerToggle}>
                         <ChevronLeftIcon />
-                        {/* {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />} */}
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>
                 </div>
                 <Divider />
-                {/* <List>
-                    {menuItems.map((item, index) => (
-                        <ListItem key={index} to={item.path}>
-                            <ListItemIcon>{item.icon}</ListItemIcon>
-                            <ListItemText primary={item.text} />
-                        </ListItem>
-                    ))}
-                </List> */}
                 {drawer}
             </Drawer>
             <main className={clsx(classes.content, { [classes.contentShift]: open })}>
@@ -316,6 +313,9 @@ return (
                 <Typography paragraph>
                     Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                 </Typography>
+                <Link href={'/download'}>
+                  Download
+                </Link>
             </main>
         </div>
     );
