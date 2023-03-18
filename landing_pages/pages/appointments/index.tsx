@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import RootState from '../../redux/reducers';
+import { RootState } from '../../redux/types';
 import {
   getAppointments,
   addAppointment,
@@ -9,17 +9,18 @@ import {
 } from '../../redux/actions/AppointmentActions';
 import { Appointment } from '../../redux/types/AppointmentTypes';
 import AppointmentList from './AppointmentsList';
+import Layout from '../../components/Layout';
 
-const AppointmentsPage = () => {
+const AppointmentsPage = ({toggleTheme, themeMode}) => {
 //   const dispatch = useDispatch();
   const appointments = useSelector(
     (state: RootState) => state.appointmentPage.appointments
   );
   const appointmentsId = useSelector(
-    (state: RootState) => state.appointmentPage.appointments.id
+    (state: RootState) => state.appointmentPage.appointments[0].id
   );
   const isLoading = useSelector(
-    (state: RootState) => state.appointmentPage.isLoading
+    (state: RootState) => state.appointmentPage.loading
   );
   const error = useSelector(
     (state: RootState) => state.appointmentPage.error
@@ -42,9 +43,9 @@ const AppointmentsPage = () => {
   };
 
   return (
-    <div>
+    <Layout toggleTheme={toggleTheme} themeMode={themeMode}>
       {isLoading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
+      {error && <p>Error: {error?.message}</p>}
       {!isLoading && !error && (
         <>
           <AppointmentList
@@ -53,7 +54,7 @@ const AppointmentsPage = () => {
           {/* <AppointmentForm /> */}
         </>
       )}
-    </div>
+    </Layout>
   );
 };
 export default AppointmentsPage;

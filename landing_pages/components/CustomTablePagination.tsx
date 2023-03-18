@@ -23,8 +23,8 @@ const CustomTablePagination: React.FC<Props> = ({
       count={count}
       rowsPerPage={rowsPerPage}
       page={page}
-      onChangePage={onChangePage}
-      onChangeRowsPerPage={onChangeRowsPerPage}
+      // onChangePage={onChangePage}
+      // onChangeRowsPerPage={onChangeRowsPerPage}
     />
   );
 };

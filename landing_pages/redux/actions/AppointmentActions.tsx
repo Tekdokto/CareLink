@@ -110,6 +110,7 @@ export const getAppointments = () => async (dispatch: Dispatch) => {
     const response = await axios.get(`api/appointments`);
     const appointments = response.data;
     dispatch(getAppointmentsSuccess(appointments));
+    return appointments;
   } catch (error) {
     dispatch(getAppointmentsFailure(error));
   }

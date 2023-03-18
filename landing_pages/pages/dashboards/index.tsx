@@ -206,8 +206,8 @@ const DashboardPage = () => {
         </div>
     );
 return (
-    <div className={classes.root}>
-        <AppBar position="fixed" className={open ? classes.appBarShift : classes.appBar}>
+        <div className={classes.root}>
+          <AppBar position="fixed" className={open ? classes.appBarShift : classes.appBar}>
             <Toolbar>
                 <IconButton
                     color="inherit"

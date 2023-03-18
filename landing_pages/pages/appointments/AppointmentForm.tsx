@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import { addAppointment, editAppointment } from '../../redux/actions/AppointmentActions';
 import { Appointment } from '../../redux/types/AppointmentTypes';
-import RootState from '../../redux/reducers';
+import { RootState } from '../../redux/types';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -30,11 +30,11 @@ const useStyles = makeStyles((theme) => ({
 
 interface AppointmentFormProps {
   open: boolean;
-  onClose: () => void;
+  onCancel: () => void;
   appointment?: Appointment;
 }
 
-const AppointmentForm: React.FC<AppointmentFormProps> = ({ open, onClose, appointment }) => {
+const AppointmentForm: React.FC<AppointmentFormProps> = ({ open, onCancel, appointment }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const doctors = useSelector((state: RootState) => state.doctors);
@@ -43,29 +43,35 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ open, onClose, appoin
   const [doctorName, setDoctorName] = useState(appointment ? appointment.doctorName : '');
   const [date, setDate] = useState(appointment ? appointment.date : '');
   const [time, setTime] = useState(appointment ? appointment.time : '');
+  const [email, setEmail] = useState(appointment ? appointment.email : '');
+  const [phone, setPhone] = useState(appointment ? appointment.phone : '');
   const [type, setType] = useState(appointment ? appointment.type : '');
 
   const handleSave = () => {
     const newAppointment: Appointment = {
-      id: appointment ? appointment.id : '',
-      patientName,
-      doctorName,
-      date,
-      time,
-      type,
+        id: appointment ? appointment.id : '',
+        patientName,
+        doctorName,
+        email,
+        phone,
+        date,
+        time,
+        type,
+        notes: '',
+        description: ''
     };
 
     if (appointment) {
-      dispatch(updateAppointment(newAppointment));
+      editAppointment(newAppointment.id, newAppointment);
     } else {
-      dispatch(addAppointment(newAppointment));
+      addAppointment(newAppointment);
     }
 
-    onClose();
+    onCancel();
   };
 
   return (
-    <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
+    <Dialog open={open} onClose={onCancel} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">{appointment ? 'Edit Appointment' : 'Add Appointment'}</DialogTitle>
       <DialogContent>
         <DialogContentText>Please fill out the form to add a new appointment.</DialogContentText>
@@ -87,7 +93,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ open, onClose, appoin
             value={doctorName}
             onChange={(event) => setDoctorName(event.target.value as string)}
           >
-            {doctors.map((doctor) => (
+            {doctors?.map((doctor: any) => (
               <MenuItem key={doctor.id} value={doctor.name}>
                 {doctor.name}
               </MenuItem>
@@ -105,6 +111,30 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ open, onClose, appoin
           fullWidth
           value={date}
           onChange={(event) => setDate(event.target.value)}
+        />
+        <TextField
+          margin="dense"
+          id="email"
+          label="Email"
+          type="email"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          fullWidth
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
+        <TextField
+          margin="dense"
+          id="phone"
+          label="Phone"
+          type="phone"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          fullWidth
+          value={phone}
+          onChange={(event) => setPhone(event.target.value)}
         />
         <TextField
           margin="dense"
@@ -134,7 +164,7 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({ open, onClose, appoin
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color="primary">
+          <Button onClick={onCancel} color="primary">
             Cancel
           </Button>
           <Button onClick={handleSave} color="primary">

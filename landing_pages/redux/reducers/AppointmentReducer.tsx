@@ -5,25 +5,55 @@ import {
     Appointment, 
 } from "../types/AppointmentTypes";
 
-const initialState: AppointmentState = {
-  appointments: [],
-  loading: false,
-  error: null,
-  filter: "",
-  page: 1,
-  totalPages: 2,
-  modalOpen: false,
-  formState: {
-    patientName: "",
-    doctorName: "string",
-    date: "",
-    time: "",
-    type: "",
-    notes: "",
-    description: "",
-  },
-  editId: null,
-};
+const initialAppointments: Appointment[] = [
+    {
+      id: '1',
+      patientName: 'John Doe',
+      doctorName: 'John Doe',
+      email: 'johndoe@gmail.com',
+      phone: '1234567890',
+      date: '2022-01-01',
+      time: '10:00 AM',
+      type: 'Emmergency',
+      notes: 'Bring passport',
+      description: 'Bring passport',
+    },
+    {
+      id: '2',
+      patientName: 'Jane Smith',
+      doctorName: 'Jane Smith',
+      email: 'janesmith@gmail.com',
+      phone: '0987654321',
+      date: '2022-02-01',
+      time: '2:00 PM',
+      type: 'CheckUp',
+      notes: 'Bring passport',
+      description: 'Bring passport',
+    },
+    // Add more appointments as needed
+  ];
+  
+  const initialState: AppointmentState = {
+    appointments: initialAppointments,
+    loading: false,
+    error: null,
+    filter: "",
+    page: 1,
+    totalPages: 2,
+    modalOpen: false,
+    formState: {
+      patientName: "",
+      doctorName: "string",
+      email: "string",
+      phone: "",
+      date: "",
+      time: "",
+      type: "",
+      notes: "",
+      description: "",
+    },
+    editId: null,
+  };
 
 const appointmentReducer = (
   state: AppointmentState = initialState,

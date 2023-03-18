@@ -18,7 +18,7 @@ import {
   Delete as DeleteIcon, 
   Edit as EditIcon 
 } from '@material-ui/icons';
-import RootState from '../../redux/reducers';
+import { RootState } from '../../redux/types';
 import { 
   editAppointment,
   deleteAppointment,
@@ -56,7 +56,7 @@ const AppointmentList = ({onEdit}) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const appointments = useSelector<RootState, Appointment[]>((state) => state.appointmentPage.appointments);
-  const isLoading = useSelector<RootState, boolean>((state) => state.appointmentPage.isLoading);
+  const isLoading = useSelector<RootState, boolean>((state) => state.appointmentPage.loading);
   const error = useSelector<RootState, Error | null>((state) => state.appointmentPage.error);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -172,23 +172,21 @@ const AppointmentList = ({onEdit}) => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </TableContainer>
-      {/* {isAdding && (
+      {isAdding && (
         <AppointmentForm
-          onSave={handleSave}
-          onCancel={handleCancel}
-        />
+          // onSave={handleSave}
+          onCancel={handleCancel} open={true}        />
       )}
       {isEditing && editedAppointment && (
         <AppointmentForm
           appointment={editedAppointment}
-          onSave={handleSave}
-          onCancel={handleCancel}
-        />
+          // onSave={handleSave}
+          onCancel={handleCancel} open={true}/>
       )}
-      {error && (
+      {/* {error && (
         <Alert severity="error">{error.message}</Alert>
-      )}
-      {isLoading && (
+      )} */}
+      {/* {isLoading && (
         <SpinnerBackdrop open={isLoading}/>
       )} */}
 </>

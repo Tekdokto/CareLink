@@ -1,8 +1,36 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Appointment, AppointmentState } from "../types/AppointmentTypes";
 
+const initialAppointments: Appointment[] = [
+  {
+    id: '1',
+    patientName: 'John Doe',
+    doctorName: 'John Doe',
+    email: 'johndoe@gmail.com',
+    phone: '1234567890',
+    date: '2022-01-01',
+    time: '10:00 AM',
+    type: 'Emmergency',
+    notes: 'Bring passport',
+    description: 'Bring passport',
+  },
+  {
+    id: '2',
+    patientName: 'Jane Smith',
+    doctorName: 'Jane Smith',
+    email: 'janesmith@gmail.com',
+    phone: '0987654321',
+    date: '2022-02-01',
+    time: '2:00 PM',
+    type: 'CheckUp',
+    notes: 'Bring passport',
+    description: 'Bring passport',
+  },
+  // Add more appointments as needed
+];
+
 const initialAppointmentState: AppointmentState = {
-  appointments: [],
+  appointments: initialAppointments,
   loading: false,
   error: null,
   filter: "",
@@ -12,6 +40,8 @@ const initialAppointmentState: AppointmentState = {
   formState: {
     patientName: "",
     doctorName: "string",
+    email: "string",
+    phone: "",
     date: "",
     time: "",
     type: "",
@@ -25,80 +55,80 @@ export const appointmentPageSlice = createSlice({
   name: "appointmentPage",
   initialAppointmentState,
   reducers: {
-    getAppointmentsRequest: (state) => {
+    getAppointmentsRequest: (state: { isLoading: boolean; error: any; }) => {
       state.isLoading = true;
       state.error = null;
     },
     getAppointmentsSuccess: (
-      state,
+      state: { isLoading: boolean; appointments: any; },
       action: PayloadAction<Appointment[]>
     ) => {
       state.isLoading = false;
       state.appointments = action.payload;
     },
-    getAppointmentsFailure: (state, action: PayloadAction<Error>) => {
+    getAppointmentsFailure: (state: { isLoading: boolean; error: any; }, action: PayloadAction<Error>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
-    addAppointmentRequest: (state) => {
+    addAppointmentRequest: (state: { isLoading: boolean; error: any; }) => {
       state.isLoading = true;
       state.error = null;
     },
-    addAppointmentSuccess: (state, action: PayloadAction<Appointment>) => {
+    addAppointmentSuccess: (state: { isLoading: boolean; appointments: any[]; }, action: PayloadAction<Appointment>) => {
       state.isLoading = false;
       state.appointments.push(action.payload);
     },
-    addAppointmentFailure: (state, action: PayloadAction<Error>) => {
+    addAppointmentFailure: (state: { isLoading: boolean; error: any; }, action: PayloadAction<Error>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
-    editAppointmentRequest: (state) => {
+    editAppointmentRequest: (state: { isLoading: boolean; error: any; }) => {
       state.isLoading = true;
       state.error = null;
     },
-    editAppointmentSuccess: (state, action: PayloadAction<Appointment>) => {
+    editAppointmentSuccess: (state: { isLoading: boolean; appointments: any[]; }, action: PayloadAction<Appointment>) => {
       state.isLoading = false;
       const index = state.appointments.findIndex(
-        (appointment) => appointment.id === action.payload.id
+        (appointment: { id: any; }) => appointment.id === action.payload.id
       );
       if (index !== -1) {
         state.appointments[index] = action.payload;
       }
     },
-    editAppointmentFailure: (state, action: PayloadAction<Error>) => {
+    editAppointmentFailure: (state: { isLoading: boolean; error: any; }, action: PayloadAction<Error>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
-    deleteAppointmentRequest: (state) => {
+    deleteAppointmentRequest: (state: { isLoading: boolean; error: any; }) => {
       state.isLoading = true;
       state.error = null;
     },
     deleteAppointmentSuccess: (
-      state,
+      state: { isLoading: boolean; appointments: any[]; },
       action: PayloadAction<string /* appointmentId */>
     ) => {
       state.isLoading = false;
       state.appointments = state.appointments.filter(
-        (appointment) => appointment.id !== action.payload
+        (appointment: { id: any; }) => appointment.id !== action.payload
       );
     },
-    deleteAppointmentFailure: (state, action: PayloadAction<Error>) => {
+    deleteAppointmentFailure: (state: { isLoading: boolean; error: any; }, action: PayloadAction<Error>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
-    setAppointmentsFilter: (state, action: PayloadAction<string>) => {
+    setAppointmentsFilter: (state: any[], action: PayloadAction<string>) => {
       state.filter = action.payload;
     },
-    setAppointmentsPage: (state, action: PayloadAction<number>) => {
+    setAppointmentsPage: (state: { page: any; }, action: PayloadAction<number>) => {
       state.page = action.payload;
     },
     setAppointmentFormState: (
-      state,
+      state: { appointmentForm: { [x: string]: any; }; },
       action: PayloadAction<{ field: string; value: string }>
     ) => {
       state.appointmentForm[action.payload.field] = action.payload.value;
     },
-    setAppointmentEditId: (state, action: PayloadAction<string | null>) => {
+    setAppointmentEditId: (state: { editId: any; }, action: PayloadAction<string | null>) => {
       state.editId = action.payload;
     },
   },

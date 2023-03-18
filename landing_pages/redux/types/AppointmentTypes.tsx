@@ -1,8 +1,10 @@
 // Appointment data type
 export interface Appointment {
-    id: number;
+    id: any;
     patientName: string;
     doctorName: string;
+    email: string;
+    phone: string;
     date: string;
     time: string,
     type: string,
@@ -13,6 +15,8 @@ export interface Appointment {
   export type FormState = {
     patientName: string;
     doctorName: string;
+    email: string;
+    phone: string;
     date: string;
     time: string;
     type: string,
@@ -24,7 +28,7 @@ export interface Appointment {
   export interface AppointmentState {
     appointments: Appointment[];
     loading: boolean;
-    error: string | null;
+    error: any;
     filter: string;
     page: number;
     totalPages: number;

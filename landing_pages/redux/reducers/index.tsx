@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import appointmentPageReducer from './AppointmentSlice
+import appointmentReducer from './AppointmentReducer'
 // import { userReducer } from './reducers/userReducer';
 
 const rootReducer = combineReducers({
-  appointmentPage: appointmentPageReducer,
+  appointmentPage: appointmentReducer,
 //   user: userReducer,
 });
 export type RootState = ReturnType<typeof rootReducer>;
