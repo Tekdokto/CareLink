@@ -316,6 +316,9 @@ return (
                 <Link href={'/download'}>
                   Download
                 </Link>
+                <Link href={'/appointments'}>
+                  Download
+                </Link>
             </main>
         </div>
     );
