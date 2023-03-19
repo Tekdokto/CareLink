@@ -17,6 +17,7 @@ import Brightness7 from '@material-ui/icons/Brightness7';
 import Brightness4 from '@material-ui/icons/Brightness4';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import useTheme  from '@material-ui/core/styles/useTheme';
+import Link from 'next/link';
 
 const drawerWidth = 240;
 
@@ -62,13 +63,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = ({toggleTheme, themeMode}) => {
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [messagesAnchorEl, setMessagesAnchorEl] = useState(null);
+const Header = ({
+    open, setOpen, mobileOpen, setMobileOpen, 
+    anchorEl, setAnchorEl, messagesAnchorEl, 
+    setMessagesAnchorEl, toggleTheme, themeMode
+}) => {
 
+    const classes = useStyles();
   const theme = useTheme();
 
   const handleDrawerToggle = () => {
@@ -103,9 +104,11 @@ return (
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" noWrap>
-                    Dashboard
-                </Typography>
+                <Link href="/dashboards">
+                    <Typography variant="h6" noWrap>
+                        Dashboard
+                    </Typography>
+                </Link>
                 <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         <IconButton color="inherit">

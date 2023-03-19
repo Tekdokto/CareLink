@@ -1,326 +1,167 @@
+
 import React, { useState } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
-import Badge from '@material-ui/core/Badge';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Toolbar from '@material-ui/core/Toolbar';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MailIcon from '@material-ui/icons/Mail';
-import MessageIcon from '@material-ui/icons/Message';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import SettingsIcon from '@material-ui/icons/Settings';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import PeopleIcon from '@material-ui/icons/People';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import AssessmentIcon from '@material-ui/icons/Assessment';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import Divider from '@material-ui/core/Divider';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Link from 'next/link';
-import clsx from 'clsx';
-import useTheme  from '@material-ui/core/styles/useTheme';
-
-
-
-const drawerWidth = 240;
+import Button from '@material-ui/core/Button';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar } from 'recharts';
+import { TextField } from '@material-ui/core';
+import Layout from '../../components/Layout';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  hide: {
-    display: 'none',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-  },
-  avatar: {
-    marginLeft: theme.spacing(2),
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
+root: {
+flexGrow: 1,
+margin: theme.spacing(4),
+},
+paper: {
+padding: theme.spacing(2),
+textAlign: 'center',
+color: theme.palette.text.secondary,
+},
+walletSection: {
+display: 'flex',
+alignItems: 'center',
+justifyContent: 'space-between',
+margin: theme.spacing(2),
+padding: theme.spacing(2),
+backgroundColor: theme.palette.primary.light,
+color: theme.palette.primary.contrastText,
+},
+debitCardSection: {
+display: 'flex',
+alignItems: 'center',
+justifyContent: 'space-between',
+margin: theme.spacing(2),
+padding: theme.spacing(2),
+backgroundColor: theme.palette.secondary.light,
+color: theme.palette.secondary.contrastText,
+},
 }));
 
-const DashboardPage = () => {
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [messagesAnchorEl, setMessagesAnchorEl] = useState(null);
+const Dashboard = ({toggleTheme, themeMode}) => {
+const classes = useStyles();
+const [walletBalance, setWalletBalance] = useState(100);
+const [debitCardBalance, setDebitCardBalance] = useState(0);
+const [debitCardAmount, setDebitCardAmount] = useState(0);
 
-  const theme = useTheme();
+const handleAddToWallet = (amount) => {
+setWalletBalance(walletBalance + amount);
+};
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-    setOpen(!open);
-  };
+const handleAddToDebitCard = () => {
+setDebitCardBalance(debitCardBalance + debitCardAmount);
+setDebitCardAmount(0);
+};
 
-  const handleMenu = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
+// Skin Condition Chart
+const skinData = [
+{ name: 'January', Acne: 12, Eczema: 2, Psoriasis: 5, Rosacea: 3 },
+{ name: 'February', Acne: 19, Eczema: 3, Psoriasis: 10, Rosacea: 5 },
+{ name: 'March', Acne: 3, Eczema: 20, Psoriasis: 12, Rosacea: 6 },
+{ name: 'April', Acne: 5, Eczema: 5, Psoriasis: 8, Rosacea: 8 },
+{ name: 'May', Acne: 2, Eczema: 1, Psoriasis: 9, Rosacea: 10 },
+{ name: 'June', Acne: 3, Eczema: 4, Psoriasis: 4, Rosacea: 12 },
+{ name: 'July', Acne: 10, Eczema: 2, Psoriasis: 6, Rosacea: 7 },
+];
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+const skinColors = ['#8884d8', '#82ca9d', '#ffc658', '#ffc107'];
 
-  const handleMessagesMenu = (event: any) => {
-    setMessagesAnchorEl(event.currentTarget);
-  };
+// Kidney Condition Chart
+const kidneyData = [
+{ name: 'High Creatinine', 'Number of Patients': 10 },
+{ name: 'Chronic Kidney Disease', 'Number of Patients': 5 },
+{ name: 'Kidney Stones', 'Number of Patients': 3 },
+{ name: 'Urinary Tract Infection ', 'Number of Patients': 8 },
+];
 
-  const handleMessagesClose = () => {
-    setMessagesAnchorEl(null);
-  };
+const kidneyColors = ['#8884d8', '#82ca9d', '#ffc658', '#ffc107'];
 
-  const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
-    { text: 'Calendar', icon: <CalendarTodayIcon />, path: '/calendar' },
-    { text: 'People', icon: <PeopleIcon />, path: '/people' },
-    { text: 'Supervisor Account', icon: <SupervisorAccountIcon />, path: '/supervisor-account' },
-    { text: 'Reports', icon: <AssessmentIcon />, path: '/reports' },
-    { text: 'Settings', icon: <SettingsIcon />, path: '/settings' }
-  ];
-  
-  const drawer = (
-    <div>
-      <div className={classes.toolbar} />
-      <List>
-        {['Dashboard', 'Appointments', 'Patients', 'Staff', 'Reports', 'Settings'].map((text, index) => (
-            <ListItem button key={text}>
-                <ListItemIcon>
-                    {index === 0 && <DashboardIcon />}
-                    {index === 1 && <CalendarTodayIcon />}
-                    {index === 2 && <PeopleIcon />}
-                    {index === 3 && <SupervisorAccountIcon />}
-                    {index === 4 && <AssessmentIcon />}
-                    {index === 5 && <SettingsIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-            </ListItem>
-        ))}
-        </List>
-        <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-                <IconButton color="inherit" aria-label="show 4 new mails">
-                    <Badge badgeContent={4} color="secondary">
-                        <MailIcon />
-                    </Badge>
-                </IconButton>
-                <IconButton color="inherit" aria-label="show 17 new notifications">
-                    <Badge badgeContent={17} color="secondary">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <IconButton color="inherit" onClick={handleMessagesMenu}>
-                    <MessageIcon />
-                </IconButton>
-                <Menu
-                    anchorEl={messagesAnchorEl}
-                    keepMounted
-                    open={Boolean(messagesAnchorEl)}
-                    onClose={handleMessagesClose}
-                >
-                    <MenuItem onClick={handleMessagesClose}>Message 1</MenuItem>
-                    <MenuItem onClick={handleMessagesClose}>Message 2</MenuItem>
-                    <MenuItem onClick={handleMessagesClose}>Message 3</MenuItem>
-                </Menu>
-                
-            </div>
-        </div>
-    );
+// Blood Pressure Chart
+const bloodData = [
+{ name: 'January', 'Systolic Pressure': 120, 'Diastolic Pressure': 80 },
+{ name: 'February', 'Systolic Pressure': 130, 'Diastolic Pressure': 85 },
+{ name: 'March', 'Systolic Pressure': 140, 'Diastolic Pressure': 90 },
+{ name: 'April', 'Systolic Pressure': 130, 'Diastolic Pressure': 80 },
+{ name: 'May', 'Systolic Pressure': 120, 'Diastolic Pressure': 75 },
+{ name: 'June', 'Systolic Pressure': 130, 'Diastolic Pressure': 85 },
+{ name: 'July', 'Systolic Pressure': 140, 'Diastolic Pressure': 90 },
+];
+
 return (
-        <div className={classes.root}>
-          <AppBar position="fixed" className={open ? classes.appBarShift : classes.appBar}>
-            <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleDrawerToggle}
-                    edge="start"
-                    className={open ? classes.hide : classes.menuButton}
-                >
-                    <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" noWrap>
-                    Dashboard
-                </Typography>
-                <div className={classes.grow} />
-                    <div className={classes.sectionDesktop}>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <MailIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={17} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton color="inherit" onClick={handleMessagesMenu}>
-                            <MessageIcon />
-                        </IconButton>
-                        <Menu
-                            anchorEl={messagesAnchorEl}
-                            keepMounted
-                            open={Boolean(messagesAnchorEl)}
-                            onClose={handleMessagesClose}
-                        >
-                            <MenuItem onClick={handleMessagesClose}>Message 1</MenuItem>
-                            <MenuItem onClick={handleMessagesClose}>Message 2</MenuItem>
-                            <MenuItem onClick={handleMessagesClose}>Message 3</MenuItem>
-                        </Menu>
-                    </div>
-                    <div className={classes.sectionMobile}>
-                        <IconButton
-                            aria-label="show more"
-                            aria-controls="mobile-menu"
-                            aria-haspopup="true"
-                            color="inherit"
-                            onClick={handleMenu}
-                        >
-                            <MoreIcon />
-                        </IconButton>
-                        <Menu
-                            id="mobile-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                        >
-                            <MenuItem>
-                                <IconButton color="inherit">
-                                    <Badge badgeContent={4} color="secondary">
-                                        <MailIcon />
-                                    </Badge>
-                                </IconButton>
-                                <p>Messages</p>
-                            </MenuItem>
-                            <MenuItem>
-                                <IconButton color="inherit">
-                                    <Badge badgeContent={17} color="secondary">
-                                        <NotificationsIcon />
-                                    </Badge>
-                                </IconButton>
-                                <p>Notifications</p>
-                            </MenuItem>
-                            <MenuItem>
-                            <Avatar alt="User Avatar" src="https://example.com/avatar.jpg" />
-                            </MenuItem>
-                        </Menu>
-                    </div>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                className={classes.drawer}
-                variant="persistent"
-                anchor="left"
-                open={open}
-                classes={{
-                paper: classes.drawerPaper,
-                }}
-            >
-                <div className={classes.drawerHeader}>
-                    <IconButton onClick={handleDrawerToggle}>
-                        <ChevronLeftIcon />
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                    </IconButton>
-                </div>
-                <Divider />
-                {drawer}
-            </Drawer>
-            <main className={clsx(classes.content, { [classes.contentShift]: open })}>
-                <div className={classes.drawerHeader} />
-                <Typography paragraph>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </Typography>
-                <Typography paragraph>
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </Typography>
-                <Link href={'/download'}>
-                  Download
-                </Link>
-                <Link href={'/appointments'}>
-                  Download
-                </Link>
-            </main>
+<Layout toggleTheme={toggleTheme} themeMode={themeMode} >
+<div className={classes.root}>
+  <Grid container spacing={3}>
+    <Grid item xs={12} sm={6}>
+      <Paper className={classes.paper}>
+        <div className={classes.walletSection}>
+          <Typography variant="h6">Wallet Balance</Typography>
+          <Typography variant="h6">${walletBalance}</Typography>
         </div>
-    );
-}
-export default DashboardPage;
+        <Button variant="contained" color="primary" onClick={() => handleAddToWallet(10)}>Add $10</Button>
+        <Button variant="contained" color="primary" onClick={() => handleAddToWallet(50)}>Add $50</Button>
+      </Paper>
+    </Grid>
+    <Grid item xs={12} sm={6}>
+      <Paper className={classes.paper}>
+        <div className={classes.debitCardSection}>
+          <Typography variant="h6">Debit Card Balance</Typography>
+          <Typography variant="h6">${debitCardBalance}</Typography>
+        </div>
+        <TextField label="Amount" type="number" value={debitCardAmount} onChange={(e) => setDebitCardAmount(parseInt(e.target.value))} />
+        <Button variant="contained" color="secondary" onClick={() => handleAddToDebitCard()}>Add to Debit Card</Button>
+      </Paper>
+    </Grid>
+    <Grid item xs={12}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Skin Condition</Typography>
+        <LineChart width={800} height={300} data={skinData}>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="Acne" stroke={skinColors[0]} />
+          <Line type="monotone" dataKey="Eczema" stroke={skinColors[1]} />
+          <Line type="monotone" dataKey="Psoriasis" stroke={skinColors[2]} />
+          <Line type="monotone" dataKey="Rosacea" stroke={skinColors[3]} />
+        </LineChart>
+      </Paper>
+    </Grid>
+    <Grid item xs={12}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Kidney Condition</Typography>
+        <PieChart width={800} height={300}>
+          <Pie dataKey="Number of Patients" isAnimationActive={false} data={kidneyData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label>
+            {
+              kidneyData.map(() => <Cell key={Math.random()} fill={kidneyColors[Math.floor(Math.random() * kidneyColors.length)]} />)
+            }
+            </Pie>
+            <Tooltip />
+            <Legend />
+            </PieChart>
+            </Paper>
+            </Grid>
+            <Grid item xs={12}>
+            <Paper className={classes.paper}>
+            <Typography variant="h5">Blood Pressure</Typography>
+            <BarChart width={800} height={300} data={bloodData}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="Systolic Pressure" fill="#8884d8" />
+            <Bar dataKey="Diastolic Pressure" fill="#82ca9d" />
+            </BarChart>
+            </Paper>
+            </Grid>
+            </Grid>
+            
+            </div>
+            </Layout>
+              );
+            };
+            export default Dashboard;

@@ -25,6 +25,7 @@ import {
   getAppointments, 
   addAppointment, 
 } from '../../redux/actions/AppointmentActions';
+import Avatar from '@material-ui/core/Avatar';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { Appointment } from '../../redux/types/AppointmentTypes';
@@ -148,8 +149,14 @@ const AppointmentList = ({onEdit}) => {
                   <TableCell component="th" scope="row">
                     {appointment.date}
                   </TableCell>
-                  <TableCell>{appointment.patientName}</TableCell>
-                  <TableCell>{appointment.doctorName}</TableCell>
+                  <TableCell>
+                    <Avatar alt="User Avatar" src="https://example.com/avatar.jpg" />
+                    {appointment.patientName}
+                  </TableCell>
+                  <TableCell>
+                    <Avatar alt="User Avatar" src="https://example.com/avatar.jpg" />
+                    {appointment.doctorName}
+                  </TableCell>
                   <TableCell className={classes.actionsCell}>
                     <Button onClick={() => handleEdit(appointment.id, appointment)}><EditIcon /></Button>
                     <Button onClick={() => handleDelete(appointment.id)}><DeleteIcon /></Button>

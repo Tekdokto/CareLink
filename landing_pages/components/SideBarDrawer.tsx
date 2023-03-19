@@ -76,11 +76,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SideBarDrawer = ({open, setOpen, toggleTheme, themeMode}) => {
+const SideBarDrawer = ({
+    open, setOpen, mobileOpen, setMobileOpen, 
+    anchorEl, setAnchorEl, messagesAnchorEl, 
+    setMessagesAnchorEl, toggleTheme, themeMode
+}) => {
   const classes = useStyles();
-  const [mobileOpen, setMobileOpen] = useState(false);
-//   const [anchorEl, setAnchorEl] = useState(null);
-  const [messagesAnchorEl, setMessagesAnchorEl] = useState(null);
 
   const theme = useTheme();
 

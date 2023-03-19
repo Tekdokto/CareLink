@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#002868",
     color: "#fff",
     padding: theme.spacing(6, 0),
-    position: "absolute",
+    position: "sticky",
     bottom: 0,
     left: 0,
     right: 0,
