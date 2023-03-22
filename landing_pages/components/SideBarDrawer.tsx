@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, MouseEventHandler } from 'react';
 import Badge from '@material-ui/core/Badge';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -26,6 +26,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Link from 'next/link';
 import useTheme  from '@material-ui/core/styles/useTheme';
+import ChatIcon from '@material-ui/icons/Chat';
+import PharmacyIcon from '@material-ui/icons/LocalPharmacy';
+import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
 
@@ -82,7 +85,7 @@ const SideBarDrawer = ({
     setMessagesAnchorEl, toggleTheme, themeMode
 }) => {
   const classes = useStyles();
-
+  const router = useRouter();
   const theme = useTheme();
 
   const handleDrawerToggle = () => {
@@ -98,6 +101,36 @@ const SideBarDrawer = ({
     setMessagesAnchorEl(null);
   };
 
+  const handleNavigation: MouseEventHandler<HTMLDivElement> = (event) => {
+    const index = parseInt(event.currentTarget.getAttribute('data-index') || '0', 10);
+    switch(index){
+      case 0:
+        router.push('/dashboards');
+        break;
+      case 1:
+        router.push('/appointments');
+        break;
+      case 2:
+        router.push('/doctors');
+        break;
+      case 3:
+        router.push('/chats');
+        break;
+      case 4:
+        router.push('/mails');
+        break;
+      case 5:
+        router.push('/pharmacy');
+        break;
+      case 6:
+        router.push('/reports');
+        break;
+      case 7:
+        router.push('/settings');
+        break;
+    }
+  }
+
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
     { text: 'Calendar', icon: <CalendarTodayIcon />, path: '/calendar' },
@@ -111,18 +144,21 @@ const SideBarDrawer = ({
     <div>
       <div className={classes.toolbar} />
       <List>
-        {['Dashboard', 'Appointments', 'Patients', 'Staff', 'Reports', 'Settings'].map((text, index) => (
-            <ListItem button key={text}>
-                <ListItemIcon>
-                    {index === 0 && <DashboardIcon />}
-                    {index === 1 && <CalendarTodayIcon />}
-                    {index === 2 && <PeopleIcon />}
-                    {index === 3 && <SupervisorAccountIcon />}
-                    {index === 4 && <AssessmentIcon />}
-                    {index === 5 && <SettingsIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-            </ListItem>
+        {['Dashboard', 'Appointments', 'Doctors', 'Chats', 'Mails', 'Pharmacy', 'Reports', 'Settings'].map((text, index) => (
+            <ListItem onClick={handleNavigation} button key={text} data-index={index}>
+              <ListItemIcon>
+                {index === 0 && <DashboardIcon color="primary"/>}
+                {index === 1 && <CalendarTodayIcon color="primary"/>}
+                {index === 2 && <PeopleIcon color="primary"/>}
+                {index === 3 && <ChatIcon color="primary"/>}
+                {index === 4 && <MailIcon color="primary"/>}
+                {index === 5 && <PharmacyIcon color="primary"/>}
+                {index === 6 && <SupervisorAccountIcon color="primary"/>}
+                {index === 7 && <AssessmentIcon color="primary"/>}
+                {index === 8 && <SettingsIcon color="primary"/>}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+          </ListItem>
         ))}
         </List>
         <div className={classes.grow} />
@@ -169,7 +205,6 @@ return (
         >
             <div className={classes.drawerHeader}>
                 <IconButton onClick={handleDrawerToggle}>
-                    <ChevronLeftIcon />
                     {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                 </IconButton>
             </div>

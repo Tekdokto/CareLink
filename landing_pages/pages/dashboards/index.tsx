@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -10,11 +10,19 @@ import { PieChart, Pie, Cell } from 'recharts';
 import { BarChart, Bar } from 'recharts';
 import { TextField } from '@material-ui/core';
 import Layout from '../../components/Layout';
+import VirtualDebitCard from '../../components/VirtualDebitCard';
+import CalendarComponent from '../../components/CalendarComponent';
 
 const useStyles = makeStyles((theme) => ({
 root: {
 flexGrow: 1,
 margin: theme.spacing(4),
+},
+walletButtons: {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: theme.spacing(0.8, 2),
 },
 paper: {
 padding: theme.spacing(2),
@@ -46,6 +54,7 @@ const classes = useStyles();
 const [walletBalance, setWalletBalance] = useState(100);
 const [debitCardBalance, setDebitCardBalance] = useState(0);
 const [debitCardAmount, setDebitCardAmount] = useState(0);
+const [calculatedAmt, setCalculatedAmt] = useState(0);
 
 const handleAddToWallet = (amount) => {
 setWalletBalance(walletBalance + amount);
@@ -95,25 +104,30 @@ return (
 <div className={classes.root}>
   <Grid container spacing={3}>
     <Grid item xs={12} sm={6}>
+      <CalendarComponent />
+    </Grid>
+    <Grid item xs={12} sm={6}>
+      <br />
+      <Paper className={classes.paper}>
+          <VirtualDebitCard balance={debitCardBalance} />
+          <br />
+        <TextField label="Amount" type="number" value={debitCardAmount} onChange={(e) => setDebitCardAmount(parseInt(e.target.value))} />
+        <Button variant="contained" color="secondary" onClick={() => handleAddToDebitCard()}>Top Up</Button>
+      </Paper>
+      <br />
       <Paper className={classes.paper}>
         <div className={classes.walletSection}>
           <Typography variant="h6">Wallet Balance</Typography>
           <Typography variant="h6">${walletBalance}</Typography>
         </div>
-        <Button variant="contained" color="primary" onClick={() => handleAddToWallet(10)}>Add $10</Button>
-        <Button variant="contained" color="primary" onClick={() => handleAddToWallet(50)}>Add $50</Button>
-      </Paper>
-    </Grid>
-    <Grid item xs={12} sm={6}>
-      <Paper className={classes.paper}>
-        <div className={classes.debitCardSection}>
-          <Typography variant="h6">Debit Card Balance</Typography>
-          <Typography variant="h6">${debitCardBalance}</Typography>
+        <br />
+        <div className={classes.walletButtons}>
+          <Button variant="contained" color="primary" onClick={() => handleAddToWallet(10)}>Add $10</Button>
+          <Button variant="contained" color="primary" onClick={() => handleAddToWallet(50)}>Add $50</Button>
         </div>
-        <TextField label="Amount" type="number" value={debitCardAmount} onChange={(e) => setDebitCardAmount(parseInt(e.target.value))} />
-        <Button variant="contained" color="secondary" onClick={() => handleAddToDebitCard()}>Add to Debit Card</Button>
       </Paper>
     </Grid>
+    
     <Grid item xs={12}>
       <Paper className={classes.paper}>
         <Typography variant="h5">Skin Condition</Typography>

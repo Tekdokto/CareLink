@@ -18,6 +18,7 @@ import Brightness4 from '@material-ui/icons/Brightness4';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import useTheme  from '@material-ui/core/styles/useTheme';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
 
@@ -69,8 +70,9 @@ const Header = ({
     setMessagesAnchorEl, toggleTheme, themeMode
 }) => {
 
-    const classes = useStyles();
+  const classes = useStyles();
   const theme = useTheme();
+  const router = useRouter();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -92,6 +94,9 @@ const Header = ({
   const handleMessagesClose = () => {
     setMessagesAnchorEl(null);
   };
+  const toDashboard = () => {
+    router.push('/dashboards')
+  }
 return (
         <AppBar position="fixed" className={open ? classes.appBarShift : classes.appBar}>
             <Toolbar>
@@ -104,11 +109,9 @@ return (
                 >
                     <MenuIcon />
                 </IconButton>
-                <Link href="/dashboards">
-                    <Typography variant="h6" noWrap>
-                        Dashboard
-                    </Typography>
-                </Link>
+                <Typography onClick={toDashboard} variant="h6" noWrap>
+                    Dashboard
+                </Typography>
                 <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         <IconButton color="inherit">
@@ -134,7 +137,7 @@ return (
                             <MenuItem onClick={handleMessagesClose}>Message 2</MenuItem>
                             <MenuItem onClick={handleMessagesClose}>Message 3</MenuItem>
                         </Menu>
-                        <Button onClick={toggleTheme}>
+                        <Button color="inherit" onClick={toggleTheme}>
                             {themeMode === 'light' ? <Brightness7 /> : <Brightness4 />}
                         </Button>
                         <MenuItem>

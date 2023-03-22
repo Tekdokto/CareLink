@@ -35,7 +35,8 @@ import SpinnerBackdrop from '../../components/SpinnerBackDrop';
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    minWidth: 200,
+    width: '100%'
   },
   addButton: {
     margin: '10px',

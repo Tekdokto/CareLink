@@ -10,6 +10,7 @@ import {
 import { Appointment } from '../../redux/types/AppointmentTypes';
 import AppointmentList from './AppointmentsList';
 import Layout from '../../components/Layout';
+import AppointmentForm from './AppointmentForm';
 
 const AppointmentsPage = ({toggleTheme, themeMode}) => {
 //   const dispatch = useDispatch();
@@ -51,7 +52,9 @@ const AppointmentsPage = ({toggleTheme, themeMode}) => {
           <AppointmentList
             onEdit={handleEditAppointment}
           />
-          {/* <AppointmentForm /> */}
+          <AppointmentForm open={false} onCancel={function (): void {
+            throw new Error('Function not implemented.');
+          } } />
         </>
       )}
     </Layout>

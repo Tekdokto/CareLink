@@ -124,12 +124,13 @@ const Layout = ({ toggleTheme, themeMode, children }) => {
             messagesAnchorEl={messagesAnchorEl} setMessagesAnchorEl={setMessagesAnchorEl} 
             toggleTheme={toggleTheme} themeMode={themeMode}  
           />
-
+          <div>
           <main className={clsx(classes.content, { [classes.contentShift]: open })}>
             <div className={classes.drawerHeader} />
             {children}
-            <Footer />
           </main>
+          <Footer open={open}/>
+          </div>
         </div>
       </div>
     );
