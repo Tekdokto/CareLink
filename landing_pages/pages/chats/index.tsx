@@ -25,6 +25,7 @@ import {
 //   ClearIcon,
   IconButton,
   InputAdornment,
+  Grid,
 } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import EditIcon from "@material-ui/icons/Edit";
@@ -43,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    height: "100%",
+    height: "80vh",
+    width: "97vw",
   },
   header: {
     backgroundColor: theme.palette.primary.main,
@@ -62,34 +64,46 @@ const useStyles = makeStyles((theme) => ({
   chatContainer: {
     flexGrow: 1,
     overflowY: "scroll",
+    width: '100%',
     padding: theme.spacing(2),
   },
   messageContainer: {
+    // display: "flex",
+    // alignItems: "flex-start",
+    // marginBottom: theme.spacing(2),
+    // padding: theme.spacing(1),
+    // borderRadius: theme.spacing(1),
+
     display: "flex",
-    alignItems: "flex-start",
+    alignItems: "center",
     marginBottom: theme.spacing(2),
-    padding: theme.spacing(1),
-    borderRadius: theme.spacing(1),
   },
   messageAvatar: {
     marginRight: theme.spacing(1),
   },
   messageContent: {
-    backgroundColor: "#fff",
+    backgroundColor: "inherit",
+    color: "inherit",
     maxWidth: "70%",
     position: "relative",
     padding: theme.spacing(1),
     borderRadius: theme.spacing(1),
   },
   myMessage: {
-    alignSelf: "flex-end",
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
     color: "#fff",
+    borderRadius: theme.spacing(2),
+    padding: theme.spacing(1),
+    maxWidth: "80%",
+    alignSelf: "flex-end",
   },
   doctorMessage: {
-    alignSelf: "flex-start",
     backgroundColor: theme.palette.primary.light,
     color: "#333",
+    borderRadius: theme.spacing(2),
+    padding: theme.spacing(1),
+    maxWidth: "80%",
+    alignSelf: "flex-start",
   },
   inputContainer: {
     display: "flex",
@@ -104,22 +118,31 @@ const useStyles = makeStyles((theme) => ({
   sendButton: {
     backgroundColor: theme.palette.secondary.main,
     color: "#fff",
+    borderRadius: theme.spacing(2),
+    padding: theme.spacing(1),
+    marginLeft: theme.spacing(1),
     "&:hover": {
-      backgroundColor: theme.palette.secondary.dark,
+        backgroundColor: theme.palette.secondary.dark,
     },
   },
   editButton: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.main,
     color: "#fff",
+    borderRadius: theme.spacing(2),
+    padding: theme.spacing(1),
+    marginLeft: theme.spacing(1),
     "&:hover": {
-      backgroundColor: theme.palette.primary.dark,
+        backgroundColor: theme.palette.secondary.dark,
     },
   },
   deleteButton: {
-    backgroundColor: theme.palette.error.main,
+    backgroundColor: theme.palette.secondary.main,
     color: "#fff",
+    borderRadius: theme.spacing(2),
+    padding: theme.spacing(1),
+    marginLeft: theme.spacing(1),
     "&:hover": {
-      backgroundColor: theme.palette.error.dark,
+        backgroundColor: theme.palette.secondary.dark,
     },
   },
   clearButton: {
@@ -182,10 +205,15 @@ const useStyles = makeStyles((theme) => ({
     selectEmpty: {
     marginTop: theme.spacing(2),
     },
+    chatBoxContainer: {
+        backgroundColor: theme.palette.background.paper,
+        width: '100%',
+        height: "100%",
+    },
     chatBox: {
-    height: 'calc(100vh - 200px)',
-    overflowY: 'auto',
-    padding: theme.spacing(2),
+        height: "100%",
+        overflowY: "scroll",
+        padding: theme.spacing(2),
     },
     currentMessage: {
     background: theme.palette.primary.light,
@@ -304,17 +332,17 @@ const useStyles = makeStyles((theme) => ({
     setEditMessage("");
     };
     
-    const handleDoctorSelect = (doctor) => {
+    const handleDoctorSelect = (doctor : any) => {
     setSelectedDoctor(doctor);
     };
     
-    const handleEditClick = (index) => {
+    const handleEditClick = (index : any) => {
     setEditIndex(index);
     setEditMessage(messageList[index].message);
     setOpenDialog(true);
     };
     
-    const handleDeleteClick = (index) => {
+    const handleDeleteClick = (index : any) => {
     setEditIndex(index);
     setOpenDialog(true);
     };
@@ -326,7 +354,7 @@ const useStyles = makeStyles((theme) => ({
     <Toolbar>
     <Box display="flex" alignItems="center">
     <Tooltip title="Back">
-    <IconButton edge="start" className={classes.backButton}>
+    <IconButton color='inherit' edge="start" className={classes.backButton}>
     <BackIcon />
     </IconButton>
     </Tooltip>
@@ -357,7 +385,7 @@ Select Doctor
 </Select>
 </FormControl>
 <Tooltip title="Settings">
-<IconButton edge="end">
+<IconButton color='inherit' edge="end">
 <SettingsIcon className={classes.settingsIcon} />
 </IconButton>
 </Tooltip>
@@ -370,55 +398,58 @@ Select Doctor
 Please select a doctor to start chatting
 </Typography>
 ) : (
+<Box className={classes.chatBoxContainer}>
 <div className={classes.chatBox}>
-{messageList.map((message, index) => (
-<div key={index}>
-<ListItem
-className={
-message.sender === currentUser?.username
-? classes.currentMessage
-: classes.otherMessage
-}
->
-<ListItemText
-primary={message.message}
-secondary={
-message.sender === currentUser?.username
-? "You"
-: message.sender
-}
-/>
-<Box>
-{message.sender === currentUser?.username && (
-<>
-<Tooltip title="Edit">
-<IconButton
-className={classes.editButton}
-onClick={() => handleEditClick(index)}
-><EditIcon />
-</IconButton>
-</Tooltip>
-<Tooltip title="Delete">
-<IconButton
-className={classes.deleteButton}
-onClick={() => handleDeleteClick(index)}
->
-<DeleteIcon />
-</IconButton>
-</Tooltip>
-</>
-)}
-<Typography variant="caption" className={classes.messageTime}>
-{moment(message.timestamp).format("LT")}
-</Typography>
+    {messageList.map((message, index) => (
+        <div key={index}>
+            <ListItem
+                className={
+                    message.sender === currentUser?.username
+                    ? classes.currentMessage
+                    : classes.otherMessage
+                }
+            >
+                <ListItemText
+                    primary={message.message}
+                    secondary={
+                        message.sender === currentUser?.username
+                        ? "You"
+                        : message.sender
+                    }
+                />
+                    <Box>
+                        {message.sender === currentUser?.username && (
+                            <>
+                                <Tooltip title="Edit">
+                                    <IconButton
+                                        className={classes.editButton}
+                                        onClick={() => handleEditClick(index)}
+                                    >
+                                        <EditIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Delete">
+                                    <IconButton
+                                        className={classes.deleteButton}
+                                        onClick={() => handleDeleteClick(index)}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </>
+                        )}
+                    <Typography variant="caption" className={classes.messageTime}>
+                        {moment(message.timestamp).format("LT")}
+                    </Typography>
+                </Box>
+            </ListItem>
+            {index === messageList.length - 1 && (
+                <div ref={messagesEndRef} />
+            )}
+        </div>
+        ))}
+    </div>
 </Box>
-</ListItem>
-{index === messageList.length - 1 && (
-<div ref={messagesEndRef} />
-)}
-</div>
-))}
-</div>
 )}
 </div>
 <div className={classes.messageInputContainer}>

@@ -74,6 +74,11 @@ const skinData = [
 { name: 'May', Acne: 2, Eczema: 1, Psoriasis: 9, Rosacea: 10 },
 { name: 'June', Acne: 3, Eczema: 4, Psoriasis: 4, Rosacea: 12 },
 { name: 'July', Acne: 10, Eczema: 2, Psoriasis: 6, Rosacea: 7 },
+{ name: 'August', Acne: 3, Eczema: 20, Psoriasis: 12, Rosacea: 6 },
+{ name: 'September', Acne: 5, Eczema: 5, Psoriasis: 8, Rosacea: 8 },
+{ name: 'October', Acne: 2, Eczema: 1, Psoriasis: 9, Rosacea: 10 },
+{ name: 'November', Acne: 3, Eczema: 4, Psoriasis: 4, Rosacea: 12 },
+{ name: 'December', Acne: 10, Eczema: 2, Psoriasis: 6, Rosacea: 7 },
 ];
 
 const skinColors = ['#8884d8', '#82ca9d', '#ffc658', '#ffc107'];
@@ -97,6 +102,11 @@ const bloodData = [
 { name: 'May', 'Systolic Pressure': 120, 'Diastolic Pressure': 75 },
 { name: 'June', 'Systolic Pressure': 130, 'Diastolic Pressure': 85 },
 { name: 'July', 'Systolic Pressure': 140, 'Diastolic Pressure': 90 },
+{ name: 'August', 'Systolic Pressure': 120, 'Diastolic Pressure': 80 },
+{ name: 'September', 'Systolic Pressure': 130, 'Diastolic Pressure': 85 },
+{ name: 'October', 'Systolic Pressure': 140, 'Diastolic Pressure': 90 },
+{ name: 'November', 'Systolic Pressure': 130, 'Diastolic Pressure': 80 },
+{ name: 'December', 'Systolic Pressure': 120, 'Diastolic Pressure': 75 },
 ];
 
 return (
@@ -128,10 +138,10 @@ return (
       </Paper>
     </Grid>
     
-    <Grid item xs={12}>
+    <Grid item xs={12} sm={6}>
       <Paper className={classes.paper}>
         <Typography variant="h5">Skin Condition</Typography>
-        <LineChart width={800} height={300} data={skinData}>
+        <LineChart width={600} height={300} data={skinData}>
           <XAxis dataKey="name" />
           <YAxis />
           <CartesianGrid strokeDasharray="3 3" />
@@ -144,38 +154,213 @@ return (
         </LineChart>
       </Paper>
     </Grid>
-    <Grid item xs={12}>
+    <Grid item xs={6}>
       <Paper className={classes.paper}>
         <Typography variant="h5">Kidney Condition</Typography>
-        <PieChart width={800} height={300}>
+        <PieChart width={600} height={300}>
           <Pie dataKey="Number of Patients" isAnimationActive={false} data={kidneyData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label>
             {
               kidneyData.map(() => <Cell key={Math.random()} fill={kidneyColors[Math.floor(Math.random() * kidneyColors.length)]} />)
             }
-            </Pie>
-            <Tooltip />
-            <Legend />
-            </PieChart>
-            </Paper>
-            </Grid>
-            <Grid item xs={12}>
-            <Paper className={classes.paper}>
-            <Typography variant="h5">Blood Pressure</Typography>
-            <BarChart width={800} height={300} data={bloodData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="Systolic Pressure" fill="#8884d8" />
-            <Bar dataKey="Diastolic Pressure" fill="#82ca9d" />
-            </BarChart>
-            </Paper>
-            </Grid>
-            </Grid>
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </Paper>
+    </Grid>
+    <Grid item xs={12}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Blood Pressure</Typography>
+        <BarChart width={1200} height={300} data={bloodData}>
+          <XAxis dataKey="name" /><YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="Systolic Pressure" fill="#8884d8" />
+          <Bar dataKey="Diastolic Pressure" fill="#82ca9d" />
+        </BarChart>
+      </Paper>
+    </Grid>
+
+    <Grid item xs={12} sm={6}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Muscles Condition</Typography>
+        <LineChart width={600} height={300} data={skinData}>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="Acne" stroke={skinColors[0]} />
+          <Line type="monotone" dataKey="Eczema" stroke={skinColors[1]} />
+          <Line type="monotone" dataKey="Psoriasis" stroke={skinColors[2]} />
+          <Line type="monotone" dataKey="Rosacea" stroke={skinColors[3]} />
+        </LineChart>
+      </Paper>
+    </Grid>
+    <Grid item xs={6}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Veins Condition</Typography>
+        <PieChart width={600} height={300}>
+          <Pie dataKey="Number of Patients" isAnimationActive={false} data={kidneyData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label>
+            {
+              kidneyData.map(() => <Cell key={Math.random()} fill={kidneyColors[Math.floor(Math.random() * kidneyColors.length)]} />)
+            }
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </Paper>
+    </Grid>
+    <Grid item xs={12}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Hair Condition</Typography>
+        <BarChart width={1200} height={300} data={bloodData}>
+          <XAxis dataKey="name" /><YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="Systolic Pressure" fill="#8884d8" />
+          <Bar dataKey="Diastolic Pressure" fill="#82ca9d" />
+        </BarChart>
+      </Paper>
+    </Grid>
+
+    <Grid item xs={12} sm={6}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Mouth Condition</Typography>
+        <LineChart width={600} height={300} data={skinData}>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="Acne" stroke={skinColors[0]} />
+          <Line type="monotone" dataKey="Eczema" stroke={skinColors[1]} />
+          <Line type="monotone" dataKey="Psoriasis" stroke={skinColors[2]} />
+          <Line type="monotone" dataKey="Rosacea" stroke={skinColors[3]} />
+        </LineChart>
+      </Paper>
+    </Grid>
+    <Grid item xs={6}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Eyes Condition</Typography>
+        <PieChart width={600} height={300}>
+          <Pie dataKey="Number of Patients" isAnimationActive={false} data={kidneyData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label>
+            {
+              kidneyData.map(() => <Cell key={Math.random()} fill={kidneyColors[Math.floor(Math.random() * kidneyColors.length)]} />)
+            }
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </Paper>
+    </Grid>
+    <Grid item xs={12}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Bones Condition</Typography>
+        <BarChart width={1200} height={300} data={bloodData}>
+          <XAxis dataKey="name" /><YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="Systolic Pressure" fill="#8884d8" />
+          <Bar dataKey="Diastolic Pressure" fill="#82ca9d" />
+        </BarChart>
+      </Paper>
+    </Grid>
+
+    <Grid item xs={12} sm={6}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Brain Condition</Typography>
+        <LineChart width={600} height={300} data={skinData}>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="Acne" stroke={skinColors[0]} />
+          <Line type="monotone" dataKey="Eczema" stroke={skinColors[1]} />
+          <Line type="monotone" dataKey="Psoriasis" stroke={skinColors[2]} />
+          <Line type="monotone" dataKey="Rosacea" stroke={skinColors[3]} />
+        </LineChart>
+      </Paper>
+    </Grid>
+    <Grid item xs={6}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Nose Condition</Typography>
+        <PieChart width={600} height={300}>
+          <Pie dataKey="Number of Patients" isAnimationActive={false} data={kidneyData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label>
+            {
+              kidneyData.map(() => <Cell key={Math.random()} fill={kidneyColors[Math.floor(Math.random() * kidneyColors.length)]} />)
+            }
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </Paper>
+    </Grid>
+    <Grid item xs={12}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Ear Condition</Typography>
+        <BarChart width={1200} height={300} data={bloodData}>
+          <XAxis dataKey="name" /><YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="Systolic Pressure" fill="#8884d8" />
+          <Bar dataKey="Diastolic Pressure" fill="#82ca9d" />
+        </BarChart>
+      </Paper>
+    </Grid>
+
+    <Grid item xs={12} sm={6}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Nails Condition</Typography>
+        <LineChart width={600} height={300} data={skinData}>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="Acne" stroke={skinColors[0]} />
+          <Line type="monotone" dataKey="Eczema" stroke={skinColors[1]} />
+          <Line type="monotone" dataKey="Psoriasis" stroke={skinColors[2]} />
+          <Line type="monotone" dataKey="Rosacea" stroke={skinColors[3]} />
+        </LineChart>
+      </Paper>
+    </Grid>
+    <Grid item xs={6}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Kidney Condition</Typography>
+        <PieChart width={600} height={300}>
+          <Pie dataKey="Number of Patients" isAnimationActive={false} data={kidneyData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label>
+            {
+              kidneyData.map(() => <Cell key={Math.random()} fill={kidneyColors[Math.floor(Math.random() * kidneyColors.length)]} />)
+            }
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </Paper>
+    </Grid>
+    <Grid item xs={12}>
+      <Paper className={classes.paper}>
+        <Typography variant="h5">Heart Condition</Typography>
+        <BarChart width={1200} height={300} data={bloodData}>
+          <XAxis dataKey="name" /><YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="Systolic Pressure" fill="#8884d8" />
+          <Bar dataKey="Diastolic Pressure" fill="#82ca9d" />
+        </BarChart>
+      </Paper>
+    </Grid>
+  </Grid>
             
-            </div>
-            </Layout>
-              );
-            };
-            export default Dashboard;
+  </div>
+</Layout>
+);
+};
+export default Dashboard;

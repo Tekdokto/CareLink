@@ -49,6 +49,8 @@ const useStyles = makeStyles((theme) => ({
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
+    backgroundColor: theme.palette.type === 'light' ? "#002868" : '#90caf9',
+    color: '#fff',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
@@ -80,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SideBarDrawer = ({
+    currentList, setCurrentList,
     open, setOpen, mobileOpen, setMobileOpen, 
     anchorEl, setAnchorEl, messagesAnchorEl, 
     setMessagesAnchorEl, toggleTheme, themeMode
@@ -87,6 +90,7 @@ const SideBarDrawer = ({
   const classes = useStyles();
   const router = useRouter();
   const theme = useTheme();
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -101,44 +105,43 @@ const SideBarDrawer = ({
     setMessagesAnchorEl(null);
   };
 
-  const handleNavigation: MouseEventHandler<HTMLDivElement> = (event) => {
+  const handleNavigation: MouseEventHandler<HTMLDivElement> = async (event) => {
     const index = parseInt(event.currentTarget.getAttribute('data-index') || '0', 10);
     switch(index){
       case 0:
-        router.push('/dashboards');
+        await router.push('/dashboards');
+        setCurrentList('Dashboard');
         break;
       case 1:
-        router.push('/appointments');
+        await router.push('/appointments');
+        setCurrentList('Appointments');
         break;
       case 2:
-        router.push('/doctors');
+        await router.push('/doctors');
+        setCurrentList('Doctors');
         break;
       case 3:
-        router.push('/chats');
+        await router.push('/chats');
+        setCurrentList('Chats');
         break;
       case 4:
-        router.push('/mails');
+        await router.push('/mails');
+        setCurrentList('Mails');
         break;
       case 5:
-        router.push('/pharmacy');
+        await router.push('/pharmacy');
+        setCurrentList('Pharmacy');
         break;
       case 6:
-        router.push('/reports');
+        await router.push('/reports');
+        setCurrentList('Reports');
         break;
       case 7:
-        router.push('/settings');
+        await router.push('/settings');
+        setCurrentList('Settings');
         break;
     }
   }
-
-  const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
-    { text: 'Calendar', icon: <CalendarTodayIcon />, path: '/calendar' },
-    { text: 'People', icon: <PeopleIcon />, path: '/people' },
-    { text: 'Supervisor Account', icon: <SupervisorAccountIcon />, path: '/supervisor-account' },
-    { text: 'Reports', icon: <AssessmentIcon />, path: '/reports' },
-    { text: 'Settings', icon: <SettingsIcon />, path: '/settings' }
-  ];
   
   const drawer = (
     <div>
@@ -205,7 +208,7 @@ return (
         >
             <div className={classes.drawerHeader}>
                 <IconButton onClick={handleDrawerToggle}>
-                    {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                    {theme.direction === 'ltr' ? <ChevronLeftIcon color="inherit" /> : <ChevronRightIcon color="inherit"/>}
                 </IconButton>
             </div>
             <Divider />

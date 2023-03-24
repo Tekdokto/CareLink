@@ -1,16 +1,19 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: "flex",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
+    justifyContent: 'space-between',
     padding: theme.spacing(1),
   },
   button: {
     marginLeft: theme.spacing(1),
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.type === 'light' ? 'white' : 'white',
   },
   selected: {
     fontWeight: "bold",
@@ -39,8 +42,9 @@ const EmailToolbar: React.FC<EmailToolbarProps> = ({
   const classes = useStyles();
 
   return (
-    <div className={classes.toolbar}>
+    <Paper className={classes.toolbar}>
       <span className={classes.selected}>{numSelected} selected</span>
+      <div>
       <Button variant="contained" onClick={onSelectAll} className={classes.button}>
         Select All
       </Button>
@@ -59,7 +63,8 @@ const EmailToolbar: React.FC<EmailToolbarProps> = ({
       <Button variant="contained" onClick={onToggleStarSelected} className={classes.button}>
         Toggle Star
       </Button>
-    </div>
+      </div>
+    </Paper>
   );
 };
 

@@ -9,6 +9,7 @@ export const lightTheme = createTheme({
     },
     background: {
       default: '#fcf5ebcc',
+      paper: '#fff',
     },
     secondary: {
       main: '#1874f4',

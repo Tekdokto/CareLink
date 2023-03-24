@@ -98,6 +98,7 @@ const Layout = ({ toggleTheme, themeMode, children }) => {
   const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [currentList, setCurrentList] = React.useState('Dashboard');
   const [messagesAnchorEl, setMessagesAnchorEl] = useState(null);
 
   const theme = useTheme();
@@ -111,6 +112,8 @@ const Layout = ({ toggleTheme, themeMode, children }) => {
       </Head>
         <div className={classes.root}>
           <Header 
+            currentList={currentList}
+            setCurrentList={setCurrentList}
             open={open} setOpen={setOpen} 
             mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} 
             anchorEl={anchorEl} setAnchorEl={setAnchorEl} 
@@ -118,7 +121,10 @@ const Layout = ({ toggleTheme, themeMode, children }) => {
             toggleTheme={toggleTheme} themeMode={themeMode} 
           />
 
-          <SideBarDrawer open={open} setOpen={setOpen} 
+          <SideBarDrawer  
+            currentList={currentList}
+            setCurrentList={setCurrentList}
+            open={open} setOpen={setOpen} 
             mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} 
             anchorEl={anchorEl} setAnchorEl={setAnchorEl} 
             messagesAnchorEl={messagesAnchorEl} setMessagesAnchorEl={setMessagesAnchorEl} 

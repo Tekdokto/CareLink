@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = ({
+    currentList, setCurrentList,
     open, setOpen, mobileOpen, setMobileOpen, 
     anchorEl, setAnchorEl, messagesAnchorEl, 
     setMessagesAnchorEl, toggleTheme, themeMode
@@ -73,6 +74,11 @@ const Header = ({
   const classes = useStyles();
   const theme = useTheme();
   const router = useRouter();
+  const [title, setTitle] = useState(currentList)
+
+  useEffect(()=>{
+    setCurrentList(title)
+  }, [currentList]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -109,8 +115,8 @@ return (
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography onClick={toDashboard} variant="h6" noWrap>
-                    Dashboard
+                <Typography variant="h6" noWrap>
+                    {title}
                 </Typography>
                 <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>

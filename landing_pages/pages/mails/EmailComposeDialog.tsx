@@ -30,11 +30,15 @@ interface NewDraft {
 type AddDraftFunction = (subject: string, body: string) => void;
 
 interface EmailComposeDialogProps {
+    open: boolean;
+    setOpen: (open: boolean) => void;
   onAddDraft: (subject: string, body: string) => void;
   onSendEmail: (to: string, subject: string, body: string) => void;
 }
 
 const EmailComposeDialog: React.FC<EmailComposeDialogProps> = ({
+    open,
+    setOpen,
   onAddDraft,
   onSendEmail,
 }) => {
@@ -43,7 +47,6 @@ const EmailComposeDialog: React.FC<EmailComposeDialogProps> = ({
   const [to, setTo] = React.useState('');
   const [subject, setSubject] = React.useState('');
   const [body, setBody] = React.useState('');
-  const [open, setOpen] = React.useState(false);
 
 const handleSend = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent> 

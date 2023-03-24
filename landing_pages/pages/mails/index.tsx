@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -37,9 +38,12 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    flexDirection: 'column',
+    width: '95vw',
+    height: '80vh'
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: 0,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -54,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   contentShift: {
-    marginLeft: drawerWidth,
+    // marginLeft: drawerWidth,
     transition: theme.transitions.create(['margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -84,13 +88,32 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
   },
+  drawerNContent: {
+    display: 'flex',
+    
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    overflowY: 'scroll'
+  },
+  composeEmail: {
+    display: 'flex',
+    width: '60%',
+    cursor: 'pointer',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: theme.palette.primary.main,
+    padding: theme.spacing(0.3, 1),
+    margin: theme.spacing(1)
+  },
+  composeEmailText: {
+    color: 'white'
   },
   toolbar: {
     display: 'flex',
     justifyContent: 'space-between',
+    color: theme.palette.primary.main,
   },
   title: {
     flexGrow: 1,
@@ -114,14 +137,18 @@ export default function Mails({toggleTheme, themeMode}) {
     [    
         { id: 1,from: 'John Doe', subject: 'Lorem ipsum dolor sit amet', body:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',      timestamp: '12:30', folder: 'inbox', starred: false, read: false, }, { id: 2, from: 'Jane Doe', subject: 'Consectetur adipiscing elit', body: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', timestamp: '10:15', folder: 'inbox', starred: false, read: true, }, 
         { id: 3, from: 'Alice Smith', subject: 'Ut enim ad minim veniam', body: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', timestamp: '09:00', folder: 'sent', starred: true, read: true, }, { id: 4, from: 'Bob Johnson', subject: 'Sed do eiusmod tempor incididunt', body: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', timestamp: 'Yesterday', folder: 'drafts', starred: false, read: false, }, 
+        { id: 5,from: 'John Doe', subject: 'Lorem ipsum dolor sit amet', body:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',      timestamp: '12:30', folder: 'inbox', starred: false, read: false, }, { id: 6, from: 'Jane Doe', subject: 'Consectetur adipiscing elit', body: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', timestamp: '10:15', folder: 'inbox', starred: false, read: true, }, 
+        { id: 7, from: 'Alice Smith', subject: 'Ut enim ad minim veniam', body: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', timestamp: '09:00', folder: 'sent', starred: true, read: true, }, { id: 8, from: 'Bob Johnson', subject: 'Sed do eiusmod tempor incididunt', body: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', timestamp: 'Yesterday', folder: 'drafts', starred: false, read: false, }, 
+        { id: 9,from: 'John Doe', subject: 'Lorem ipsum dolor sit amet', body:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',      timestamp: '12:30', folder: 'inbox', starred: false, read: false, }, { id: 10, from: 'Jane Doe', subject: 'Consectetur adipiscing elit', body: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', timestamp: '10:15', folder: 'inbox', starred: false, read: true, }, 
+        { id: 11, from: 'Alice Smith', subject: 'Ut enim ad minim veniam', body: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', timestamp: '09:00', folder: 'sent', starred: true, read: true, }, { id: 12, from: 'Bob Johnson', subject: 'Sed do eiusmod tempor incididunt', body: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', timestamp: 'Yesterday', folder: 'drafts', starred: false, read: false, }, 
     ]
 );
 
-  const handleDrawerOpen = () => {
+  const handleOpenEmailCompose = () => {
     setOpen(true);
   };
   
-  const handleDrawerClose = () => {
+  const handleCloseEmailCompose = () => {
     setOpen(false);
   };
   
@@ -201,9 +228,9 @@ export default function Mails({toggleTheme, themeMode}) {
   return (
     <Layout toggleTheme={toggleTheme} themeMode={themeMode}>
         <div className={classes.root}>
-            <AppBar position="static" className={classes.appBar}>
+            <Paper className={classes.appBar}>
                 <Toolbar>
-                    <IconButton
+                    {/* <IconButton
                         edge="start"
                         className={classes.menuButton}
                         color="inherit"
@@ -211,66 +238,66 @@ export default function Mails({toggleTheme, themeMode}) {
                         onClick={handleDrawerOpen}
                     >
                         <MenuIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <Typography variant="h6" className={classes.title}>
                         {currentList.toUpperCase()}
                     </Typography>
-                    <IconButton color="inherit" onClick={() => setCurrentList('drafts')}>
+                    <IconButton color="primary" onClick={() => setCurrentList('drafts')}>
                         <EditIcon />
                     </IconButton>
-                    <IconButton color="inherit" onClick={() => setCurrentList('sent')}>
+                    <IconButton color="primary" onClick={() => setCurrentList('sent')}>
                         <SendIcon />
                     </IconButton>
-                    <IconButton color="inherit" onClick={() => setCurrentList('trash')}>
+                    <IconButton color="primary" onClick={() => setCurrentList('trash')}>
                         <DeleteIcon />
                     </IconButton>
-                    <IconButton color="inherit" onClick={() => setCurrentList('spam')}>
+                    <IconButton color="primary" onClick={() => setCurrentList('spam')}>
                         <ReportIcon />
                     </IconButton>
                 </Toolbar>
-            </AppBar>
-            <Drawer
+            </Paper>
+            <span className={classes.drawerNContent}>
+            <Paper
                 className={classes.drawer}
-                variant="persistent"
-                anchor="left"
-                open={open}
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
             >
                 <div className={classes.drawerHeader}>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                    </IconButton>
+                    <Paper onClick={() => handleOpenEmailCompose()} className={classes.composeEmail}>
+                        <IconButton >
+                            <EditIcon />
+                        </IconButton>
+                        <div className={classes.composeEmailText}>
+                            <Typography>
+                                Compose
+                            </Typography>
+                        </div>
+                    </Paper>
                 </div>
                 <Divider />
                 <List>
                     <ListItem button onClick={() => handleCurrentListChange('inbox')}>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
+                        <ListItemIcon><InboxIcon color="primary" /></ListItemIcon>
                         <ListItemText primary="Inbox" />
                     </ListItem>
                     <ListItem button onClick={() => handleCurrentListChange('drafts')}>
-                        <ListItemIcon><DraftsIcon /></ListItemIcon>
+                        <ListItemIcon><DraftsIcon color="primary" /></ListItemIcon>
                         <ListItemText primary="Drafts" />
                     </ListItem>
                     <ListItem button onClick={() => handleCurrentListChange('sent')}>
-                        <ListItemIcon><SendIcon /></ListItemIcon>
+                        <ListItemIcon><SendIcon color="primary" /></ListItemIcon>
                         <ListItemText primary="Sent" />
                     </ListItem>
                     <ListItem button onClick={() => handleCurrentListChange('trash')}>
-                        <ListItemIcon><DeleteIcon /></ListItemIcon>
+                        <ListItemIcon><DeleteIcon color="primary" /></ListItemIcon>
                         <ListItemText primary="Trash" />
                     </ListItem>
                     <ListItem button onClick={() => handleCurrentListChange('spam')}>
-                        <ListItemIcon><ReportIcon /></ListItemIcon>
+                        <ListItemIcon><ReportIcon color="primary" /></ListItemIcon>
                         <ListItemText primary="Spam" />
                     </ListItem>
                 </List>
-            </Drawer>
+            </Paper>
             <main
-                className={clsx(classes.content, {
-                    [classes.contentShift]: open,
-                })}
+                className={clsx(classes.content)}
             >
                 <div className={classes.toolbar} />
                 {filteredEmails.map((email) => (
@@ -287,6 +314,7 @@ export default function Mails({toggleTheme, themeMode}) {
                     </div>
                 )}
             </main>
+            </span>
             <EmailToolbar
                 numSelected={selectedEmails.length}
                 onSelectAll={handleSelectAll}
@@ -296,7 +324,7 @@ export default function Mails({toggleTheme, themeMode}) {
                 onMarkSelectedAsUnread={handleMarkSelectedAsUnread}
                 onToggleStarSelected={handleToggleStarSelected}
             />
-            <EmailComposeDialog onAddDraft={handleAddDraft} onSendEmail={handleSendEmail} />
+            <EmailComposeDialog open={open} setOpen={setOpen} onAddDraft={handleAddDraft} onSendEmail={handleSendEmail} />
         </div>
     </Layout>
   );
