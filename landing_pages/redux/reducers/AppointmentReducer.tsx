@@ -3,6 +3,8 @@ import {
     AppointmentActionTypes, 
     AppointmentState, 
     Appointment, 
+    AppointmentMeans,
+    Doctors
 } from "../types/AppointmentTypes";
 
 const initialAppointments: Appointment[] = [
@@ -10,6 +12,7 @@ const initialAppointments: Appointment[] = [
       id: '1',
       patientName: 'John Doe',
       doctorName: 'John Doe',
+      meansOfAppointment: 'Audio',
       email: 'johndoe@gmail.com',
       phone: '1234567890',
       date: '2022-01-01',
@@ -22,6 +25,20 @@ const initialAppointments: Appointment[] = [
       id: '2',
       patientName: 'Jane Smith',
       doctorName: 'Jane Smith',
+      meansOfAppointment: 'Video',
+      email: 'janesmith@gmail.com',
+      phone: '0987654321',
+      date: '2022-02-01',
+      time: '2:00 PM',
+      type: 'CheckUp',
+      notes: 'Bring passport',
+      description: 'Bring passport',
+    },
+    {
+      id: '2',
+      patientName: 'Jerry Coker',
+      doctorName: 'Jane Smith',
+      meansOfAppointment: 'Physical',
       email: 'janesmith@gmail.com',
       phone: '0987654321',
       date: '2022-02-01',
@@ -32,9 +49,52 @@ const initialAppointments: Appointment[] = [
     },
     // Add more appointments as needed
   ];
+
+  const initialDoctors: Doctors[] = [
+    {
+      id: '1',
+      doctorName: 'John Doe',
+      appointments: 'Video',
+      patients: '',
+      email: 'johndoe@gmail.com',
+      phone: '1234567890',
+    },
+    {
+      id: '2',
+      doctorName: 'Jane Smith',
+      appointments: 'Video',
+      patients: '',
+      email: 'janesmith@gmail.com',
+      phone: '0987654321',
+    },
+    {
+      id: '2',
+      doctorName: 'Jane Smith',
+      appointments: 'Video',
+      patients: '',
+      email: 'janesmith@gmail.com',
+      phone: '0987654321',
+    },
+    // Add more doctors as needed
+  ];
+
+  const initialAppointmentMeans: AppointmentMeans[] = [
+    {
+      means: 'Video'
+    },
+    {
+      means: 'Audio'
+    },
+    {
+      means:'Physical'
+    },
+    // Add more appointments means as needed
+  ];
   
   const initialState: AppointmentState = {
     appointments: initialAppointments,
+    doctors: initialDoctors,
+    appointmentMeans: initialAppointmentMeans,
     loading: false,
     error: null,
     filter: "",
@@ -42,10 +102,11 @@ const initialAppointments: Appointment[] = [
     totalPages: 2,
     modalOpen: false,
     formState: {
-      patientName: "",
+      patientName: "string",
       doctorName: "string",
+      meansOfAppointment: "string",
       email: "string",
-      phone: "",
+      phone: "string",
       date: "",
       time: "",
       type: "",

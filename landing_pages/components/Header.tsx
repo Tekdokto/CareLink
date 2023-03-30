@@ -107,16 +107,16 @@ return (
         <AppBar position="fixed" className={open ? classes.appBarShift : classes.appBar}>
             <Toolbar>
                 <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleDrawerToggle}
-                    edge="start"
-                    className={open ? classes.hide : classes.menuButton}
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleDrawerToggle}
+                  edge="start"
+                  className={open ? classes.hide : classes.menuButton}
                 >
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" noWrap>
-                    {title}
+                  {title}
                 </Typography>
                 <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
@@ -134,14 +134,14 @@ return (
                             <MessageIcon />
                         </IconButton>
                         <Menu
-                            anchorEl={messagesAnchorEl}
-                            keepMounted
-                            open={Boolean(messagesAnchorEl)}
-                            onClose={handleMessagesClose}
+                          anchorEl={messagesAnchorEl}
+                          keepMounted
+                          open={Boolean(messagesAnchorEl)}
+                          onClose={handleMessagesClose}
                         >
-                            <MenuItem onClick={handleMessagesClose}>Message 1</MenuItem>
-                            <MenuItem onClick={handleMessagesClose}>Message 2</MenuItem>
-                            <MenuItem onClick={handleMessagesClose}>Message 3</MenuItem>
+                          <MenuItem onClick={handleMessagesClose}>Message 1</MenuItem>
+                          <MenuItem onClick={handleMessagesClose}>Message 2</MenuItem>
+                          <MenuItem onClick={handleMessagesClose}>Message 3</MenuItem>
                         </Menu>
                         <Button color="inherit" onClick={toggleTheme}>
                             {themeMode === 'light' ? <Brightness7 /> : <Brightness4 />}
@@ -152,36 +152,36 @@ return (
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton
-                            aria-label="show more"
-                            aria-controls="mobile-menu"
-                            aria-haspopup="true"
-                            color="inherit"
-                            onClick={handleMenu}
+                          aria-label="show more"
+                          aria-controls="mobile-menu"
+                          aria-haspopup="true"
+                          color="inherit"
+                          onClick={handleMenu}
                         >
                             <MoreIcon />
                         </IconButton>
                         <Menu
-                            id="mobile-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
+                          id="mobile-menu"
+                          anchorEl={anchorEl}
+                          keepMounted
+                          open={Boolean(anchorEl)}
+                          onClose={handleClose}
                         >
                             <MenuItem>
-                                <IconButton color="inherit">
-                                    <Badge badgeContent={4} color="secondary">
-                                        <MailIcon />
-                                    </Badge>
-                                </IconButton>
-                                <p>Messages</p>
+                              <IconButton color="inherit">
+                                  <Badge badgeContent={4} color="secondary">
+                                      <MailIcon />
+                                  </Badge>
+                              </IconButton>
+                              <p>Messages</p>
                             </MenuItem>
                             <MenuItem>
-                                <IconButton color="inherit">
-                                    <Badge badgeContent={17} color="secondary">
-                                        <NotificationsIcon />
-                                    </Badge>
-                                </IconButton>
-                                <p>Notifications</p>
+                              <IconButton color="inherit">
+                                  <Badge badgeContent={17} color="secondary">
+                                      <NotificationsIcon />
+                                  </Badge>
+                              </IconButton>
+                              <p>Notifications</p>
                             </MenuItem>
                         </Menu>
                     </div>

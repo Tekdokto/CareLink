@@ -1,6 +1,8 @@
-import { AppointmentState } from "./AppointmentTypes";
+import { AppointmentState, Doctors, AppointmentMeans } from "./AppointmentTypes";
+
 
 export interface RootState {
-  doctors: any;
+  appointmentMeans: AppointmentMeans;
+  doctors: Doctors;
   appointmentPage: AppointmentState;
 }

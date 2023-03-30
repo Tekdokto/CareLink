@@ -10,7 +10,6 @@ import AvailableMedications from './AvailableMedications';
 const useStyles = makeStyles(theme => ({
     medications: {
       display: 'flex',
-
     }
 }))
 const previousCheckup = {
@@ -133,7 +132,7 @@ const previousCheckup = {
         description: 'Used to treat type 2 diabetes',
         price: 7.99
       }
-  ];
+    ];
   
   
 const Pharmacy = ({toggleTheme, themeMode}) => {

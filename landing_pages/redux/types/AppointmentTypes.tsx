@@ -3,6 +3,7 @@ export interface Appointment {
     id: any;
     patientName: string;
     doctorName: string;
+    meansOfAppointment: any;
     email: string;
     phone: string;
     date: string;
@@ -11,31 +12,49 @@ export interface Appointment {
     notes: string;
     description: string;
   }
+
+  // Doctor data type
+export interface Doctors {
+  id: any;
+  doctorName: string;
+  appointments?: any;
+  patients?: any;
+  email: string;
+  phone: string;
+}
+
+ // Appointment Means data type
+export interface AppointmentMeans {
+  means: any;
+}
   
-  export type FormState = {
-    patientName: string;
-    doctorName: string;
-    email: string;
-    phone: string;
-    date: string;
-    time: string;
-    type: string,
-    notes: string;
-    description: string;
-  };
+export type FormState = {
+  patientName: string;
+  doctorName: string;
+  meansOfAppointment: string;
+  email: string;
+  phone: string;
+  date: string;
+  time: string;
+  type: string,
+  notes: string;
+  description: string;
+};
   
-  // Appointment page state
-  export interface AppointmentState {
-    appointments: Appointment[];
-    loading: boolean;
-    error: any;
-    filter: string;
-    page: number;
-    totalPages: number;
-    modalOpen: boolean;
-    formState: FormState;
-    editId: string | null;
-  }
+// Appointment page state
+export interface AppointmentState {
+  appointments: Appointment[];
+  doctors: Doctors[];
+  appointmentMeans: AppointmentMeans[];
+  loading: boolean;
+  error: any;
+  filter: string;
+  page: number;
+  totalPages: number;
+  modalOpen: boolean;
+  formState: FormState;
+  editId: string | null;
+}
   
   // Appointment page action types
   export interface AppointmentAction {

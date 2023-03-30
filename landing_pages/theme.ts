@@ -58,5 +58,5 @@ export const darkTheme = createTheme({
       leavingScreen: 195,
     },
   },
-  direction: 'rtl',
+  direction: 'ltr',
 });

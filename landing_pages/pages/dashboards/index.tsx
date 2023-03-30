@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -16,7 +16,7 @@ import CalendarComponent from '../../components/CalendarComponent';
 const useStyles = makeStyles((theme) => ({
 root: {
 flexGrow: 1,
-margin: theme.spacing(4),
+margin: theme.spacing(0),
 },
 walletButtons: {
   display: 'flex',

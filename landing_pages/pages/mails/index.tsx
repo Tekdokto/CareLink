@@ -38,9 +38,10 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    flexGrow: 1,
     flexDirection: 'column',
-    width: '95vw',
-    height: '80vh'
+    width: '100%',
+    height: '90vh'
   },
   appBar: {
     zIndex: 0,

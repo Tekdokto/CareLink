@@ -16,7 +16,7 @@ import InputBase from '@material-ui/core/InputBase';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(0),
   },
   paper: {
     padding: theme.spacing(2),

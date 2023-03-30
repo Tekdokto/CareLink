@@ -8,6 +8,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -51,18 +52,22 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     backgroundColor: theme.palette.type === 'light' ? "#002868" : '#90caf9',
     color: '#fff',
-    padding: theme.spacing(0, 1),
+    padding: theme.spacing(0, 2),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   toolbar: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    flexDitection: 'column',
+    justifyContent: 'space-between',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
+  },
+  logo: {
+    fontWeight: '800px'
   },
   grow: {
     flexGrow: 1,
@@ -146,55 +151,55 @@ const SideBarDrawer = ({
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-      <List>
-        {['Dashboard', 'Appointments', 'Doctors', 'Chats', 'Mails', 'Pharmacy', 'Reports', 'Settings'].map((text, index) => (
-            <ListItem onClick={handleNavigation} button key={text} data-index={index}>
-              <ListItemIcon>
-                {index === 0 && <DashboardIcon color="primary"/>}
-                {index === 1 && <CalendarTodayIcon color="primary"/>}
-                {index === 2 && <PeopleIcon color="primary"/>}
-                {index === 3 && <ChatIcon color="primary"/>}
-                {index === 4 && <MailIcon color="primary"/>}
-                {index === 5 && <PharmacyIcon color="primary"/>}
-                {index === 6 && <SupervisorAccountIcon color="primary"/>}
-                {index === 7 && <AssessmentIcon color="primary"/>}
-                {index === 8 && <SettingsIcon color="primary"/>}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <List>
+          {['Dashboard', 'Appointments', 'Doctors', 'Chats', 'Mails', 'Pharmacy', 'Reports', 'Settings'].map((text, index) => (
+              <ListItem onClick={handleNavigation} button key={text} data-index={index}>
+                <ListItemIcon>
+                  {index === 0 && <DashboardIcon color="primary"/>}
+                  {index === 1 && <CalendarTodayIcon color="primary"/>}
+                  {index === 2 && <PeopleIcon color="primary"/>}
+                  {index === 3 && <ChatIcon color="primary"/>}
+                  {index === 4 && <MailIcon color="primary"/>}
+                  {index === 5 && <PharmacyIcon color="primary"/>}
+                  {index === 6 && <SupervisorAccountIcon color="primary"/>}
+                  {index === 7 && <AssessmentIcon color="primary"/>}
+                  {index === 8 && <SettingsIcon color="primary"/>}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+            </ListItem>
+          ))}
         </List>
         <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-                <IconButton color="inherit" aria-label="show 4 new mails">
-                    <Badge badgeContent={4} color="secondary">
-                        <MailIcon />
-                    </Badge>
-                </IconButton>
-                <IconButton color="inherit" aria-label="show 17 new notifications">
-                    <Badge badgeContent={17} color="secondary">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <IconButton color="inherit" onClick={handleMessagesMenu}>
-                    <MessageIcon />
-                </IconButton>
-                <Menu
-                    anchorEl={messagesAnchorEl}
-                    keepMounted
-                    open={Boolean(messagesAnchorEl)}
-                    onClose={handleMessagesClose}
-                >
-                    <MenuItem onClick={handleMessagesClose}>Message 1</MenuItem>
-                    <MenuItem onClick={handleMessagesClose}>Message 2</MenuItem>
-                    <MenuItem onClick={handleMessagesClose}>Message 3</MenuItem>
-                </Menu>
-                <Button onClick={toggleTheme}>
-                    {themeMode === 'light' ? <Brightness7 /> : <Brightness4 />}
-                </Button>
-                
-            </div>
+        <div className={classes.sectionDesktop}>
+            <IconButton color="primary" aria-label="show 4 new mails">
+                <Badge badgeContent={4} color="secondary">
+                    <MailIcon />
+                </Badge>
+            </IconButton>
+            <IconButton color="primary" aria-label="show 17 new notifications">
+                <Badge badgeContent={17} color="secondary">
+                    <NotificationsIcon />
+                </Badge>
+            </IconButton>
+            <IconButton color="primary" onClick={handleMessagesMenu}>
+                <MessageIcon />
+            </IconButton>
+            <Menu
+                anchorEl={messagesAnchorEl}
+                keepMounted
+                open={Boolean(messagesAnchorEl)}
+                onClose={handleMessagesClose}
+            >
+                <MenuItem onClick={handleMessagesClose}>Message 1</MenuItem>
+                <MenuItem onClick={handleMessagesClose}>Message 2</MenuItem>
+                <MenuItem onClick={handleMessagesClose}>Message 3</MenuItem>
+            </Menu>
+            <Button onClick={toggleTheme}>
+                {themeMode === 'light' ? <Brightness7 color="primary" /> : <Brightness4 color="primary" />}
+            </Button>
+            
         </div>
+      </div>
     );
 return (
         <Drawer
@@ -207,7 +212,8 @@ return (
             }}
         >
             <div className={classes.drawerHeader}>
-                <IconButton onClick={handleDrawerToggle}>
+              <Typography variant="h5" className='logo'>CareLink</Typography>
+                <IconButton color="inherit" onClick={handleDrawerToggle}>
                     {theme.direction === 'ltr' ? <ChevronLeftIcon color="inherit" /> : <ChevronRightIcon color="inherit"/>}
                 </IconButton>
             </div>

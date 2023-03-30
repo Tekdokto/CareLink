@@ -8,7 +8,7 @@ body {
     background-attachment: fixed;
     font-family: 'Archivo Narrow', sans-serif;
   }
-  h1, h2, h3 {
+  h1, h2, h3, h4, h5, h6, p {
     font-family: 'Changa', sans-serif;
   }
   

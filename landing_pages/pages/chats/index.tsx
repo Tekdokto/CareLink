@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  AppBar,
   Toolbar,
   Typography,
   Box,
@@ -22,10 +21,10 @@ import {
   Button,
   Select,
   MenuItem,
-//   ClearIcon,
   IconButton,
   InputAdornment,
   Grid,
+  InputLabel,
 } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import EditIcon from "@material-ui/icons/Edit";
@@ -43,13 +42,29 @@ const socket = io("http://localhost:3000");
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
+    flexGrow: 1,
+    margin: theme.spacing(0),
     height: "80vh",
-    width: "97vw",
+    width: "100%",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      height: "100vh",
+      width: "100vw",
+    },
   },
   header: {
     backgroundColor: theme.palette.primary.main,
+    zIndex: 0,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
     color: "#fff",
+    width: "25%",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
   },
   backButton: {
     marginRight: theme.spacing(2),
@@ -63,17 +78,71 @@ const useStyles = makeStyles((theme) => ({
   },
   chatContainer: {
     flexGrow: 1,
-    overflowY: "scroll",
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    color: "#000",
     width: '100%',
+    height: '100%',
     padding: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
+  },
+  messageUser: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+  messageBox: {
+    display: "flex",
+    justifyContent: 'space-between',
+    flexDirection: "column",
+    padding: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    borderRadius: theme.spacing(2),
+    maxWidth: "100%",
+    height: '76vh',
+  },
+  userMessage: {
+    alignSelf: "flex-end",
+    backgroundColor: theme.palette.primary.main,
+    color: "#fff",
+  },
+  otherMessage: {
+    alignSelf: "flex-start",
+    backgroundColor: theme.palette.grey[200],
+  },
+  messageInput: {
+    width: '95%',
+    marginTop: theme.spacing(2),
+  },
+  userMessageContainer: {
+    height: '100%',
+    overFlow:'scroll',
+    display: "flex",
+    justifyContent: "flex-end",
+    backgroundColor: theme.palette.primary.main,
+    color: "#fff",
+    padding: theme.spacing(1),
+    borderRadius: "16px 0px 16px 16px",
+  },
+  otherMessageContainer: {
+    height: '100%',
+    overFlow:'scroll',
+    display: "flex",
+    justifyContent: "flex-start",
+    backgroundColor: "#eee",
+    padding: theme.spacing(1),
+    borderRadius: "0px 16px 16px 16px",
+  },
+  settingsDialogContent: {
+    display: "flex",
+    flexDirection: "column",
   },
   messageContainer: {
-    // display: "flex",
-    // alignItems: "flex-start",
-    // marginBottom: theme.spacing(2),
-    // padding: theme.spacing(1),
-    // borderRadius: theme.spacing(1),
-
     display: "flex",
     alignItems: "center",
     marginBottom: theme.spacing(2),
@@ -94,7 +163,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
     borderRadius: theme.spacing(2),
     padding: theme.spacing(1),
-    maxWidth: "80%",
+    maxWidth: "60%",
     alignSelf: "flex-end",
   },
   doctorMessage: {
@@ -102,8 +171,12 @@ const useStyles = makeStyles((theme) => ({
     color: "#333",
     borderRadius: theme.spacing(2),
     padding: theme.spacing(1),
-    maxWidth: "80%",
+    maxWidth: "60%",
     alignSelf: "flex-start",
+  },
+  chatfield: {
+    display: 'flex',
+    width: '100%'
   },
   inputContainer: {
     display: "flex",
@@ -116,405 +189,239 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
   sendButton: {
-    backgroundColor: theme.palette.secondary.main,
-    color: "#fff",
-    borderRadius: theme.spacing(2),
-    padding: theme.spacing(1),
     marginLeft: theme.spacing(1),
-    "&:hover": {
-        backgroundColor: theme.palette.secondary.dark,
-    },
   },
-  editButton: {
-    backgroundColor: theme.palette.secondary.main,
-    color: "#fff",
-    borderRadius: theme.spacing(2),
-    padding: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    "&:hover": {
-        backgroundColor: theme.palette.secondary.dark,
-    },
-  },
-  deleteButton: {
-    backgroundColor: theme.palette.secondary.main,
-    color: "#fff",
-    borderRadius: theme.spacing(2),
-    padding: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    "&:hover": {
-        backgroundColor: theme.palette.secondary.dark,
-    },
-  },
-  clearButton: {
-    color: theme.palette.text.secondary,
-    "&:hover": {
-      color: theme.palette.text.primary,
-    },
-  },
-  doctorListContainer: {
-    width: 200,
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
-    },
-  },
-  doctorList: {
-    backgroundColor: theme.palette.background.paper,
-    maxHeight: 400,
-    overflowY: "scroll",
-    borderRadius: theme.spacing(1),
-    boxShadow: theme.shadows[1],
-    },
-    selectedDoctor: {
-    backgroundColor: theme.palette.primary.light,
-    color: "#fff",
-    },
-    avatar: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    },
-    doctorAvatar: {
+  formControl: {
     marginRight: theme.spacing(1),
-    },
-    online: {
-    color: "green",
-    fontSize: "0.8rem",
-    },
-    offline: {
-    color: "gray",
-    fontSize: "0.8rem",
-    },
-    username: {
-    fontWeight: 'bold',
-    fontSize: '1.2rem',
-    },
-    settingsIcon: {
-    marginLeft: 'auto',
-    },
-    doctorIcon: {
-    marginRight: theme.spacing(1),
-    },
-    selectDoctorText: {
-    marginLeft: theme.spacing(1),
-    fontWeight: 'bold',
-    },
-    formControl: {
-    margin: theme.spacing(1),
     minWidth: 120,
-    },
-    selectEmpty: {
+  },
+  selectEmpty: {
     marginTop: theme.spacing(2),
-    },
-    chatBoxContainer: {
-        backgroundColor: theme.palette.background.paper,
-        width: '100%',
-        height: "100%",
-    },
-    chatBox: {
-        height: "100%",
-        overflowY: "scroll",
-        padding: theme.spacing(2),
-    },
-    currentMessage: {
-    background: theme.palette.primary.light,
-    color: theme.palette.common.white,
-    borderRadius: theme.spacing(2),
-    padding: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    maxWidth: '80%',
-    alignSelf: 'flex-end',
-    },
-    otherMessage: {
-    background: theme.palette.grey[300],
-    borderRadius: theme.spacing(2),
-    padding: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    maxWidth: '80%',
-    alignSelf: 'flex-start',
-    },
-    messageTime: {
-    fontSize: '0.8rem',
-    color: theme.palette.grey[500],
-    marginLeft: theme.spacing(1),
-    },
-    messageInputContainer: {
-    display: 'flex',
-    alignItems: 'center',
+  },
+  dialogTitle: {
+    backgroundColor: theme.palette.primary.main,
+    color: "#fff",
+  },
+  dialogContent: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  dialogButton: {
     marginTop: theme.spacing(2),
-    },
-    messageInput: {
-    flexGrow: 1,
-    marginRight: theme.spacing(1),
-    },
-    sendIcon: {
-    cursor: 'pointer',
-    },
-    }));
+  },
+}));
+
+export default function Chat({ toggleTheme, themeMode}) {
+  const classes = useStyles();
+  const [user, setUser] = useState("");
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState("");
+  const [availableDoctors, setAvailableDoctors] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState("");
+  const [settings, setSettings] = useState({
+    font: "Roboto",
+    fontSize: "16px",
+    theme: "light",
+  });
+
+  const messageContainerRef = useRef(null);
+
+  useEffect(() => {
+    // Ask for user name when component mounts
+    const userName = prompt("Please enter your name:");
+    if (userName) {
+      setUser(userName);
+      socket.emit("new-user", userName);
+    }
+
+    // Listen for incoming messages
+    socket.on("chat-message", (message) => {
+      setMessages((messages) => [...messages, message]);
+    });
+
+    // Listen for available doctors
+    socket.on("available-doctors", (doctors) => {
+      setAvailableDoctors(doctors);
+    });
+
+    // Scroll to bottom of message container
+    messageContainerRef.current.scrollTop =
+      messageContainerRef.current.scrollHeight;
+  }, []);
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (message) {
+      socket.emit("send-chat-message", { user, message });
+      setMessage("");
+    }
+  };
+
+  const handleOpenSelectDoctor = () => {
+    setOpen(true);
+  };
+
+  const handleCloseSelectDoctor = () => {
+    setOpen(false);
+  };
+
+  const handleSelectDoctor = (e) => {
+    setSelectedDoctor(e.target.value);
+  };
+
+  const handleRequestDoctor = () => {
+    socket.emit("request-doctor", { user, doctor: selectedDoctor });
+    setOpen(false);
+  };
+
+  const handleOpenSettings = () => {
+    // setSettingsOpen(true);
+    };
     
-    const dummyDoctors = [
-        { id: 1, name: "Dr. John Doe", isOnline: true },
-        { id: 2, name: "Dr. Jane Smith", isOnline: true },
-        { id: 3, name: "Dr. Mike Brown", isOnline: false },
-      ];
-    const Chat = ({ currentUser, toggleTheme, themeMode }) => {
-    const classes = useStyles();
-    const [message, setMessage] = useState("");
-    const [messageList, setMessageList] = useState([]);
-    const [openDialog, setOpenDialog] = useState(false);
-    const [editIndex, setEditIndex] = useState(null);
-    const [editMessage, setEditMessage] = useState("");
-    const [selectedDoctor, setSelectedDoctor] = useState("");
-    const [doctorList, setDoctorList] = useState(dummyDoctors);
-    const messagesEndRef = useRef(null);
-    
-    const onlineStatus = currentUser?.isOnline ? (
-        <FiberManualRecordIcon className={classes.online} />
-      ) : (
-        <FiberManualRecordIcon className={classes.offline} />
+    const handleCloseSettings = () => {
+    // setSettingsOpen(false);
+    };
+
+  return (
+    <Layout toggleTheme={toggleTheme} themeMode={themeMode}>
+      <Box className={classes.root}>
+        <Paper className={classes.header} elevation={6}>
+          <Toolbar>
+            <Typography className={classes.title} variant="h6">
+              CareChat
+            </Typography>
+            <IconButton
+              edge="start"
+              className={classes.backButton}
+              onClick={() => window.history.back()}
+              color="inherit"
+              aria-label="back"
+            >
+              <BackIcon />
+            </IconButton>
+          </Toolbar>
+          <List>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>
+                  <FiberManualRecordIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary="Online"
+                secondary={`You (${user}) are online`}
+              />
+            </ListItem>
+            <ListItem button onClick={handleOpenSelectDoctor}>
+              <ListItemAvatar>
+                <Avatar>
+                  <SelectDoctorIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Request a Doctor" />
+            </ListItem>
+            <ListItem button>
+              <ListItemAvatar>
+                <Avatar>
+                  <SettingsIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Settings" />
+            </ListItem>
+          </List>
+        </Paper>
+        <Box className={classes.chatContainer} ref={messageContainerRef}>
+            <form onSubmit={handleSendMessage}>
+              <Paper className={classes.messageBox} elevation={6}>
+                <div>
+                  {messages.map((message, index) => (
+                    <Box
+                      key={index}
+                      // Render each message with the Message component
+                      className={
+                        message.user === user
+                        ? classes.userMessageContainer
+                        : classes.otherMessageContainer
+                      }
+                    >
+                      <Message message={message} user={user} />
+                    </Box>
+                  ))}
+                </div>
+                <span className={classes.chatfield}>
+                  <TextField
+                    className={classes.messageInput}
+                    label="Type a message"
+                    variant="outlined"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                  />
+                  <Button
+                    className={classes.sendButton}
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                  >
+                    <SendIcon />
+                  </Button>
+                </span>
+              </Paper>
+            </form>
+          </Box>
+            <Dialog open={open} onClose={handleCloseSelectDoctor}>
+              <DialogTitle className={classes.dialogTitle}>
+                Request a Doctor
+              </DialogTitle>
+              <DialogContent className={classes.dialogContent}>
+                <FormControl className={classes.formControl}>
+                  <InputLabel>Select a Doctor</InputLabel>
+                  <Select
+                    value={selectedDoctor}
+                    onChange={handleSelectDoctor}
+                    className={classes.selectEmpty}
+                  >
+                    {availableDoctors.map((doctor) => (
+                      <MenuItem key={doctor} value={doctor}>
+                        {doctor}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Button
+                  className={classes.dialogButton}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleRequestDoctor}
+                >
+                  Request
+                </Button>
+              </DialogContent>
+            </Dialog>
+          </Box>
+        </Layout>
       );
-    useEffect(() => {
-    socket.emit("join_room", currentUser);
-    socket.on("receive_message", (data) => {
-    setMessageList([...messageList, data]);
-    });
-    socket.on("all_doctors", (data) => {
-    setDoctorList(data.filter((doctor) => doctor !== currentUser));
-    });
-    }, []);
-    
-    useEffect(() => {
-    if (messagesEndRef.current) {
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-    }, [messageList]);
-    
-    const handleSendMessage = () => {
-    if (message.trim() === "") {
-    return;
-    }
-    if (editIndex !== null) {
-    handleEditMessage();
-    return;
-    }
-    const data = {
-    message: message.trim(),
-    sender: currentUser,
-    receiver: selectedDoctor,
-    };
-    socket.emit("send_message", data);
-    setMessage("");
-    };
-    
-    const handleEditMessage = () => {
-    const updatedMessageList = [...messageList];
-    updatedMessageList[editIndex].message = editMessage.trim();
-    setMessageList(updatedMessageList);
-    setOpenDialog(false);
-    setEditIndex(null);
-    setEditMessage("");
-    setMessage("");
-    };
-    
-    const handleDeleteMessage = () => {
-    const updatedMessageList = [...messageList];
-    updatedMessageList.splice(editIndex, 1);
-    setMessageList(updatedMessageList);
-    setOpenDialog(false);
-    setEditIndex(null);
-    setEditMessage("");
-    setMessage("");
-    };
-    
-    const handleClearMessage = () => {
-    setMessage("");
-    setOpenDialog(false);
-    setEditIndex(null);
-    setEditMessage("");
-    };
-    
-    const handleDoctorSelect = (doctor : any) => {
-    setSelectedDoctor(doctor);
-    };
-    
-    const handleEditClick = (index : any) => {
-    setEditIndex(index);
-    setEditMessage(messageList[index].message);
-    setOpenDialog(true);
-    };
-    
-    const handleDeleteClick = (index : any) => {
-    setEditIndex(index);
-    setOpenDialog(true);
-    };
+                
+    function Message(props) {
+      const classes = useStyles();
+      const { message, user } = props;
     
     return (
-        <Layout toggleTheme={toggleTheme} themeMode={themeMode} >
-    <div className={classes.root}>
-    <AppBar position="static" className={classes.header}>
-    <Toolbar>
-    <Box display="flex" alignItems="center">
-    <Tooltip title="Back">
-    <IconButton color='inherit' edge="start" className={classes.backButton}>
-    <BackIcon />
-    </IconButton>
-    </Tooltip>
-    <Avatar alt="Avatar" src={currentUser?.avatar} className={classes.avatar} />
-<Typography variant="h6" className={classes.username}>
-{currentUser?.username}
-</Typography>
-</Box>
-<Box display="flex" alignItems="center">
-<FormControl className={classes.formControl}>
-<Select
-value={selectedDoctor}
-onChange={(e) => handleDoctorSelect(e.target.value)}
-displayEmpty
-className={classes.selectEmpty}
-inputProps={{ "aria-label": "Without label" }}>
+        <Box
+          className={
+          message.user === user
+          ? classes.userMessage
+          : classes.otherMessage
+          }
+        >
+          <Typography variant="subtitle2" className={classes.messageUser}>
+            {message.user}
+          </Typography>
+          <Typography variant="body1">{message.message}</Typography>
+        </Box>
+      );
+    }
+             
 
-<MenuItem value="" disabled>
-<SelectDoctorIcon className={classes.doctorIcon} />
-Select Doctor
-</MenuItem>
-{doctorList.map((doctor) => (
-<MenuItem >
-    {onlineStatus}
-    {doctor.name}
-</MenuItem>
-))}
-</Select>
-</FormControl>
-<Tooltip title="Settings">
-<IconButton color='inherit' edge="end">
-<SettingsIcon className={classes.settingsIcon} />
-</IconButton>
-</Tooltip>
-</Box>
-</Toolbar>
-</AppBar>
-<div className={classes.chatContainer}>
-{selectedDoctor === "" ? (
-<Typography variant="h4" className={classes.selectDoctorText}>
-Please select a doctor to start chatting
-</Typography>
-) : (
-<Box className={classes.chatBoxContainer}>
-<div className={classes.chatBox}>
-    {messageList.map((message, index) => (
-        <div key={index}>
-            <ListItem
-                className={
-                    message.sender === currentUser?.username
-                    ? classes.currentMessage
-                    : classes.otherMessage
-                }
-            >
-                <ListItemText
-                    primary={message.message}
-                    secondary={
-                        message.sender === currentUser?.username
-                        ? "You"
-                        : message.sender
-                    }
-                />
-                    <Box>
-                        {message.sender === currentUser?.username && (
-                            <>
-                                <Tooltip title="Edit">
-                                    <IconButton
-                                        className={classes.editButton}
-                                        onClick={() => handleEditClick(index)}
-                                    >
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Delete">
-                                    <IconButton
-                                        className={classes.deleteButton}
-                                        onClick={() => handleDeleteClick(index)}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </>
-                        )}
-                    <Typography variant="caption" className={classes.messageTime}>
-                        {moment(message.timestamp).format("LT")}
-                    </Typography>
-                </Box>
-            </ListItem>
-            {index === messageList.length - 1 && (
-                <div ref={messagesEndRef} />
-            )}
-        </div>
-        ))}
-    </div>
-</Box>
-)}
-</div>
-<div className={classes.messageInputContainer}>
-<TextField
-id="message-input"
-label="Type a message"
-variant="outlined"
-className={classes.messageInput}
-value={message}
-onChange={(e) => setMessage(e.target.value)}
-onKeyPress={(e) => {
-if (e.key === "Enter") {
-handleSendMessage();
-}
-}}
-InputProps={{
-endAdornment: (
-<InputAdornment position="end">
-<IconButton onClick={handleSendMessage}>
-<SendIcon className={classes.sendIcon} />
-</IconButton>
-</InputAdornment>
-),
-}}
-/>
-</div>
-<Dialog
-open={openDialog}
-onClose={() => setOpenDialog(false)}
-aria-labelledby="alert-dialog-title"
-aria-describedby="alert-dialog-description"
->
-<DialogTitle id="alert-dialog-title">{"Edit message?"}</DialogTitle>
-<DialogContent>
-<TextField
-id="edit-message-input"
-label="Edit message"
-variant="outlined"
-className={classes.messageInput}
-value={editMessage}
-onChange={(e) => setEditMessage(e.target.value)}
-/>
-</DialogContent>
-<DialogActions>
-<Button onClick={handleClearMessage} color="primary">
-Cancel
-</Button>
-{editIndex !== null ? (
-<>
-<Button onClick={handleDeleteMessage} color="secondary">
-Delete
-</Button>
-<Button onClick={handleEditMessage} color="primary" autoFocus>
-Save
-</Button>
-</>
-) : (
-<Button onClick={handleSendMessage} color="primary" autoFocus>
-Send
-</Button>
-)}
-</DialogActions>
-</Dialog>
-</div>
-</Layout>
-);
-};
-export default Chat;

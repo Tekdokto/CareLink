@@ -10,6 +10,7 @@ import {
   TableRow, 
   Paper, 
   Button, 
+  Alert,
   CircularProgress, 
   TablePagination 
 } from '@material-ui/core';
@@ -29,7 +30,8 @@ import Avatar from '@material-ui/core/Avatar';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { Appointment } from '../../redux/types/AppointmentTypes';
-import AppointmentForm from './AppointmentForm';
+import PrivateAppointmentForm from './PrivateAppointmentForm';
+import PublicAppointmentForm from './PublicAppointmentForm';
 import CustomTablePagination from '../../components/CustomTablePagination';
 import SpinnerBackdrop from '../../components/SpinnerBackDrop';
 
@@ -54,7 +56,7 @@ const useStyles = makeStyles({
   },
 });
 
-const AppointmentList = ({onEdit}) => {
+const AppointmentList = ({onEdit, onAdd}) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const appointments = useSelector<RootState, Appointment[]>((state) => state.appointmentPage.appointments);
@@ -80,6 +82,7 @@ const AppointmentList = ({onEdit}) => {
 
   const handleAdd = () => {
     setIsAdding(true);
+    onAdd()
     // Show Form Modal
   };
 
@@ -138,6 +141,10 @@ const AppointmentList = ({onEdit}) => {
               </TableCell>
               <TableCell>Patient Name</TableCell>
               <TableCell>Doctor Name</TableCell>
+              <TableCell>Email Address</TableCell>
+              <TableCell>Time</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell>Notes</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -148,15 +155,25 @@ const AppointmentList = ({onEdit}) => {
               ).map((appointment) => (
                 <TableRow key={appointment.id}>
                   <TableCell component="th" scope="row">
-                    {appointment.date}
+                    {appointment?.date}
                   </TableCell>
                   <TableCell>
-                    <Avatar alt="User Avatar" src="https://example.com/avatar.jpg" />
-                    {appointment.patientName}
+                    {appointment?.patientName}
                   </TableCell>
                   <TableCell>
-                    <Avatar alt="User Avatar" src="https://example.com/avatar.jpg" />
-                    {appointment.doctorName}
+                    {appointment?.doctorName}
+                  </TableCell>
+                  <TableCell>
+                    {appointment?.email}
+                  </TableCell>
+                  <TableCell>
+                    {appointment?.time}
+                  </TableCell>
+                  <TableCell>
+                    {appointment?.type}
+                  </TableCell>
+                  <TableCell>
+                    {appointment?.notes}
                   </TableCell>
                   <TableCell className={classes.actionsCell}>
                     <Button onClick={() => handleEdit(appointment.id, appointment)}><EditIcon /></Button>
@@ -181,22 +198,29 @@ const AppointmentList = ({onEdit}) => {
         />
       </TableContainer>
       {isAdding && (
-        <AppointmentForm
-          // onSave={handleSave}
+        <PrivateAppointmentForm
           onCancel={handleCancel} open={true}        />
       )}
       {isEditing && editedAppointment && (
-        <AppointmentForm
+        <PrivateAppointmentForm
           appointment={editedAppointment}
-          // onSave={handleSave}
           onCancel={handleCancel} open={true}/>
       )}
-      {/* {error && (
-        <Alert severity="error">{error.message}</Alert>
-      )} */}
-      {/* {isLoading && (
-        <SpinnerBackdrop open={isLoading}/>
-      )} */}
+      {isAdding && (
+        <PublicAppointmentForm
+          onCancel={handleCancel} open={true}        />
+      )}
+      {isEditing && editedAppointment && (
+        <PublicAppointmentForm
+          appointment={editedAppointment}
+          onCancel={handleCancel} open={true}/>
+      )}
+      {error && (
+        <Alert severity="error">{error?.message}</Alert>
+      )}
+      {isLoading && (
+        <SpinnerBackdrop isLoading={isLoading}/>
+      )}
 </>
 );
 return renderedTable;

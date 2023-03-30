@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Head from 'next/head';
 import clsx from 'clsx';
@@ -6,6 +6,8 @@ import useTheme  from '@material-ui/core/styles/useTheme';
 import Header from './Header';
 import SideBarDrawer from './SideBarDrawer';
 import Footer from './Footer';
+
+import dynamic from 'next/dynamic';
 
 const drawerWidth = 240;
 
@@ -95,14 +97,37 @@ const useStyles = makeStyles((theme) => ({
 
 const Layout = ({ toggleTheme, themeMode, children }) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentList, setCurrentList] = React.useState('Dashboard');
   const [messagesAnchorEl, setMessagesAnchorEl] = useState(null);
-
   const theme = useTheme();
+  const [windowWidth, setWindowWidth] = useState(0);
 
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   if (windowWidth <= 480) {
+  //     setOpen(!open);
+  //   }
+  // }, [windowWidth]);
+
+  // if (typeof window !== 'undefined') {
+  //   if (windowWidth <= 480) setOpen(!open);
+  // }
   return (
     <div>
       <Head>
@@ -121,7 +146,7 @@ const Layout = ({ toggleTheme, themeMode, children }) => {
             toggleTheme={toggleTheme} themeMode={themeMode} 
           />
 
-          <SideBarDrawer  
+          <SideBarDrawer 
             currentList={currentList}
             setCurrentList={setCurrentList}
             open={open} setOpen={setOpen} 

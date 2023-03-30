@@ -1,99 +1,156 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import {
+  Box,
+  Avatar,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  Link,
+  FormControlLabel,
+  Checkbox,
+} from "@material-ui/core";
+import { LockOutlined } from "@material-ui/icons";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { firebaseAuth, createAccountWithEmail } from "../../utils/firebase";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
-import Layout from "../../components/Layout";
-import classNames from 'classnames';
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
-  form: {
+  root: {
+    backgroundImage: `linear-gradient(to bottom right, ${theme.palette.primary.main}, #FFFDE4)`,
+    minHeight: "100vh",
     display: "flex",
-    flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
-    
-    position: 'relative',
-  zIndex: 1,
+    flexDirection: "column",
+    animation: "$backgroundAnimation 20s ease infinite",
   },
-  input: {
-    margin: theme.spacing(1),
+  "@keyframes backgroundAnimation": {
+    "0%": {
+      backgroundPosition: "0% 50%",
+    },
+    "50%": {
+      backgroundPosition: "100% 50%",
+    },
+    "100%": {
+      backgroundPosition: "0% 50%",
+    },
   },
-  button: {
-    margin: theme.spacing(2),
+  avatar: {
+    margin: "1em",
+    backgroundColor: theme.palette.primary.main,
+  },
+  form: {
+    width: "60%",
+    marginTop: theme.spacing(1),
+    animation: "$formAnimation 1s",
+  },
+  "@keyframes formAnimation": {
+    "0%": {
+      opacity: 0,
+      transform: "translateY(10px)",
+    },
+    "100%": {
+      opacity: 1,
+      transform: "translateY(0)",
+    },
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+    backgroundColor: theme.palette.primary.main,
+    "&:hover": {
+      backgroundColor: "#005aa1",
+    },
   },
 }));
 
-export default function Login({toggleTheme, themeMode}) {
-  const classes = useStyles();
+export default function Signup() {
   const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Call function to generate unique phone number
-    const newPhoneNumber = generatePhoneNumber(email);
-    setPhoneNumber(newPhoneNumber);
-    setOpenSnackbar(true);
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const classes = useStyles();
+  const router = useRouter();
+  
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
   };
 
-  const handleChange = (e) => {
-    setEmail(e.target.value);
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
   };
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+    try {
+      await createAccountWithEmail( email, password);
+    } catch (error) {
+      console.log(error);
     }
-
-    setOpenSnackbar(false);
-  };
-
-  const generatePhoneNumber = (email) => {
-    const randomNumber = Math.floor(Math.random() * 1000000000);
-    const phoneNumber = `${email.split("@")[0]}-${randomNumber}`;
-    console.log(phoneNumber)
-    return phoneNumber;
+    setIsLoading(false);
   };
 
   return (
-    <>
-    <Layout toggleTheme={toggleTheme} themeMode={themeMode}>
-      <form className={classNames(classes.form)} onSubmit={handleSubmit}>
-        <TextField
-          label="Email"
-          variant="outlined"
-          className={classNames(classes.input)}
-          value={email}
-          onChange={handleChange}
-        />
+    <div className={classes.root}>
+      
+      <Typography variant="h2" align="center" color="primary" gutterBottom>
+        CareLink
+      </Typography>
+      <Avatar className={classes.avatar}>
+        <LockOutlined />
+      </Avatar>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Sign Up
+      </Typography>
+      <form className={classes.form} onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              value={email}
+              onChange={handleEmailChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+          </Grid>
+        </Grid>
         <Button
           type="submit"
+          className={classes.submit}
+          fullWidth
           variant="contained"
           color="primary"
-          className={classNames(classes.button)}
-        >
-          Submit
-        </Button>
-      </form>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-      >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-        //   onClose={handleCloseSnackbar}&
-          severity="success"
-        >
-          Your unique phone number is {phoneNumber}
-        </MuiAlert>
-      </Snackbar>
-      </Layout>
-    </>
-  );
-}
-
-
+          disabled={isLoading}
+          >
+          {isLoading ? "Loading..." : "Sign Up"}
+          </Button>
+          <Grid container justify="flex-end">
+          <Grid item>
+          <Link href="#" onClick={() => router.push('/login')} variant="body2">
+            Already have an account? Log in
+          </Link>
+          </Grid>
+          </Grid>
+          </form>
+          </div>
+          );
+          }
